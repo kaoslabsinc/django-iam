@@ -225,6 +225,15 @@ methods required to enable role-based permissions on the user and is the equival
 itself plus a number of properties such as `full_name`, `display_name`, and `initials`. Please refer to the code to see
 what each method does.
 
+### `IAMUserAdmin`
+
+`iam.contrib.users.admin.IAMUserAdmin`
+
+`IAMUserAdmin` is an enhancement over Django's default `UserAdmin`. It enables users to create staff users right from
+the add user screen (important in certain workflows), hides superusers from non-superusers, and hides fields such as
+user permissions from non-superusers, as they are neither useful in the IAM permissions model, nor every staff user
+should have access to them.
+
 ## Development and Testing
 
 ### IDE Setup

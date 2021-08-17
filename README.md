@@ -155,7 +155,7 @@ class ManagerProfileAdmin(ProfileAdmin):
     ...
 ```
 
-## Override permissions
+### Override permissions
 
 This utility is useful when you install an app that has access permissions set up using `iam` and you are looking to
 override its settings.

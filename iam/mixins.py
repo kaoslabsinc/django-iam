@@ -4,9 +4,9 @@ class IAMUserMixin:
             return False
 
         self.__dict__.setdefault('_roles_cache', {})
-
         roles_cache = self.__dict__['_roles_cache']
         cache_key = (role, *args)
+
         if roles_cache.get(cache_key) is None:
             profile_model = role.profile_model
             try:
@@ -15,6 +15,7 @@ class IAMUserMixin:
                 self._role_profile_doesnt_exist(role, *args)
             else:
                 self._role_profile_exists(profile, role, *args)
+
         return roles_cache[cache_key]
 
     def _get_profile_instance(self, profile_model):

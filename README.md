@@ -215,6 +215,16 @@ override_perms(GoodModel, {
 
 For more examples, check out `example/simple2`.
 
+## Optional tools and utilities (`iam.contrib`)
+
+### `AbstractIAMUser`
+
+`django-iam` comes with two abstract user models to assist in your development. `AbstractBaseIAMUser` implements the
+methods required to enable role-based permissions on the user and is the equivalent to django's `AbstractBaseUser`.
+`AbstractIAMUser` implements role-based permissions, `RulesModel` to enable rule based permission on the User model
+itself plus a number of properties such as `full_name`, `display_name`, and `initials`. Please refer to the code to see
+what each method does.
+
 ## Development and Testing
 
 ### IDE Setup

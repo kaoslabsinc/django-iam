@@ -2,8 +2,11 @@ import rules
 from django.contrib.auth.models import AbstractUser
 from rules.contrib.models import RulesModel
 
+from iam.mixins import RolesUserMixin
+
 
 class User(
+    RolesUserMixin,
     AbstractUser,
     RulesModel
 ):

@@ -19,7 +19,6 @@ class Migration(migrations.Migration):
             name='SimpleManager',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('archived_at', models.DateTimeField(blank=True, null=True)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='simple_manager_profile', to=settings.AUTH_USER_MODEL)),
             ],
             bases=(rules.contrib.models.RulesModelMixin, models.Model),

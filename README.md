@@ -100,11 +100,11 @@ As the last step, enable your user model to work with IAM and roles by having it
 
 ```python
 # users/models.py
-from iam.mixins import RolesUserMixin
+from iam.mixins import IAMUserMixin
 
 
 class User(
-    RolesUserMixin,
+    IAMUserMixin,
     ...,
     AbstractUser
 ):

@@ -1,4 +1,4 @@
-class RolesUserMixin:
+class IAMUserMixin:
     def has_role(self, role, privileged=False):
         if not self.is_authenticated:
             return False

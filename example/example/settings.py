@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'sample',
     'rules.apps.AutodiscoverRulesConfig',
+
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -129,6 +131,8 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
     'rules.permissions.ObjectPermissionBackend',

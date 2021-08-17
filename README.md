@@ -42,12 +42,15 @@ Create a profile for the role, e.g.
 ```python
 # app/models.py
 from django.db import models
+from iam.factories import AbstractProfileFactory
 
 
 class SimpleManager(
+    AbstractProfileFactory.as_abstract_model(related_name='simple_manager_profile'),
     models.Model
 ):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    # user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)  # comes from AbstractProfileFactory
+    pass
 ```
 
 In your app, create a `rules.py`:

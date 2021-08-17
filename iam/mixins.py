@@ -10,7 +10,7 @@ class RolesUserMixin:
         if roles_cache.get(cache_key) is None:
             profile_model = role.profile_model
             try:
-                profile = profile_model.objects.all().get(user=self)
+                profile = profile_model.objects.active().get(user=self)
                 roles_cache[(role, False)] = True
                 try:
                     roles_cache[(role, True)] = profile.privileged

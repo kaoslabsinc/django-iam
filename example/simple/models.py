@@ -1,16 +1,15 @@
 import rules
-from django.conf import settings
 from django.db import models
 from rules.contrib.models import RulesModel
 
+from iam.factories import AbstractProfileFactory
 from simple.rules import is_simple_manager
 
 
 class SimpleManager(
+    AbstractProfileFactory.as_abstract_model(related_name='simple_manager_profile'),
     RulesModel
 ):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-
     class Meta:
         rules_permissions = {
             'add': rules.is_superuser,

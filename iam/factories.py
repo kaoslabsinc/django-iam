@@ -1,5 +1,6 @@
 from building_blocks.models import Archivable
 from building_blocks.models.factories import AbstractModelFactory, HasUserFactory
+from building_blocks.models.utils import generate_field_kwargs
 from django.db import models
 
 
@@ -18,3 +19,19 @@ class AbstractProfileFactory(AbstractModelFactory):
                 return f"{self.user}'s {self._meta.verbose_name}"
 
         return AbstractProfile
+
+
+class HasOwnerFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(owner_profile_class, related_name=None,
+                          one_to_one=False, optional=False, on_delete=None):
+        owner_field_cls, on_delete = AbstractModelFactory._get_fk_params(one_to_one, optional, on_delete)
+
+        class HasOwner(models.Model):
+            class Meta:
+                abstract = True
+
+            owner = owner_field_cls(owner_profile_class, on_delete=on_delete, related_name=related_name,
+                                    **generate_field_kwargs(optional_null=optional))
+
+        return HasOwner

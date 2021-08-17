@@ -17,3 +17,14 @@ class ProfileAdminBlock(EditReadonlyAdminMixin, AdminBlock):
         *HasUserAdminBlock.fieldsets,
         *ArchivableAdminBlock.fieldsets,
     )
+
+
+class HasOwnerAdminBlock(EditReadonlyAdminMixin, AdminBlock):
+    search_fields = ('owner__user__username',)
+    list_display = ('owner',)
+    autocomplete_fields = ('owner',)
+    edit_readonly_fields = ('owner',)
+    fields = ('owner',)
+    fieldsets = (
+        (None, {'fields': fields}),
+    )

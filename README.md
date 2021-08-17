@@ -117,17 +117,42 @@ For more examples, check out `example/simple`.
 
 ## Utilities
 
-## Deactivating profiles
+### Deactivating profiles
 
 In order to delete/deactivate a role, just like the Django user model, do not delete the instance. Instead, you can
 deactivate their profile by calling `instance.archive()`. Objects can be associated with Profile models, and you don't
 want to delete them, lest your database state loses integrity (you already can't because of Django's deletion
-protection).
+protection). You can also deactivate a profile using the admin interface documented in the
+following [section](#profileadmin).
 
 ```python
 instance: ManagerProfile
 instance.archive().save()  # To deactivate their profile and suspend their role
 instance.restore().save()  # To activate their profile and restore their role
+```
+
+### `ProfileAdmin`
+
+For the best experience in the admin interface with profile models, have your profile admins inherit
+form `iam.admin.admin.ProfileAdmin`. This enables autocomplete on the user field, and also allows you to activate and
+deactivate profiles with a click. In order to use `ProfileAdmin`, add `django_object_actions` to your `INSTALLED_APPS`.
+`django-object-actions` (already installed as a dependency) allows object level actions in the admin interface.
+
+```python
+# settings.py
+INSTALLED_APPS = [
+    ...,
+    'django_object_actions',
+    ...
+]
+
+# admin.py
+from iam.admin.admin import ProfileAdmin
+
+
+@admin.register(ManagerProfile)
+class ManagerProfileAdmin(ProfileAdmin):
+    ...
 ```
 
 ## Override permissions

@@ -127,7 +127,7 @@ following [section](#profileadmin).
 
 ```python
 instance: ManagerProfile
-instance.archive().save()  # To deactivate their profile and suspend their role
+instance.deactivate().save()  # To deactivate their profile and suspend their role
 instance.restore().save()  # To activate their profile and restore their role
 ```
 

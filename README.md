@@ -117,6 +117,19 @@ For more examples, check out `example/simple`.
 
 ## Utilities
 
+## Deactivating profiles
+
+In order to delete/deactivate a role, just like the Django user model, do not delete the instance. Instead, you can
+deactivate their profile by calling `instance.archive()`. Objects can be associated with Profile models, and you don't
+want to delete them, lest your database state loses integrity (you already can't because of Django's deletion
+protection).
+
+```python
+instance: ManagerProfile
+instance.archive().save()  # To deactivate their profile and suspend their role
+instance.restore().save()  # To activate their profile and restore their role
+```
+
 ## Override permissions
 
 This utility is useful when you install an app that has access permissions set up using `iam` and you are looking to

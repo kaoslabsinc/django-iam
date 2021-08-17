@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'sample',
     'rules.apps.AutodiscoverRulesConfig',
 
     'users',
+    'simple',
 ]
 
 MIDDLEWARE = [

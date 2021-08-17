@@ -191,6 +191,30 @@ override_perms(GoodModel, {
 
 For more examples, check out `example/simple2`.
 
+### `HasOwnerFactory`
+
+A common design pattern is to associate instances of objects with a user. For example, a blog post might have an author
+which can also give them extra permissions to that blog post since they are the author/owner of that object. Using IAM,
+instead of associating the object with the user model directly, you associate the object with the profile. In the blog
+post example, the `BlogPost` model would have a foreign key to the `BlogAuthor` model.
+
+IAM comes with an abstract model factory (to read more about abstract model factories,
+check [`django-building-blocks`](https://github.com/kaoslabsinc/django-building-blocks)) to facilitate this design
+pattern. In the blog post example:
+
+```python
+from iam.factories import HasOwnerFactory
+
+
+class BlogPost(
+    HasOwnerFactory.as_abstract_model(BlogAuthor),
+    models.Model
+):
+    ...
+```
+
+Now your `BlogPost` model has a foreign key to `BlogAuthor`.
+
 ## Development and Testing
 
 ### IDE Setup

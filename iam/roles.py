@@ -21,19 +21,15 @@ class Role:
             self._profile_model = apps.get_model(self._profile_model_path)
         return self._profile_model
 
-    def get_predicate(self, privileged=False):
+    def get_predicate(self, *args):
         def is_role(user):
-            return user.has_role(self, privileged=privileged)
+            return user.has_role(self, *args)
 
         return rules.predicate(is_role, name=f'is_{self.name}')
 
     @property
     def predicate(self):
-        return self.get_predicate(privileged=False)
-
-    @property
-    def predicate_privileged(self):
-        return self.get_predicate(privileged=True)
+        return self.get_predicate()
 
     def __str__(self):
         return f"Role: {self.name}"

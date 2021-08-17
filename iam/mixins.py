@@ -11,20 +11,20 @@ class IAMUserMixin:
             profile_model = role.profile_model
             try:
                 profile = self._get_profile_instance(profile_model)
-                self.role_profile_exists(profile, role, *args)
+                self._role_profile_exists(profile, role, *args)
             except profile_model.DoesNotExist:
-                self.role_profile_doesnt_exist(role, *args)
+                self._role_profile_doesnt_exist(role, *args)
         return roles_cache[cache_key]
 
     def _get_profile_instance(self, profile_model):
         return profile_model.objects.active().get(user=self)
 
-    def role_profile_exists(self, profile, role, *args):
+    def _role_profile_exists(self, profile, role, *args):
         roles_cache = self.__dict__['_roles_cache']
         cache_key = (role, *args)
         roles_cache[cache_key] = True
 
-    def role_profile_doesnt_exist(self, role, *args):
+    def _role_profile_doesnt_exist(self, role, *args):
         roles_cache = self.__dict__['_roles_cache']
         cache_key = (role, *args)
         roles_cache[cache_key] = False

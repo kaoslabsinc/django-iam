@@ -11,9 +11,10 @@ class IAMUserMixin:
             profile_model = role.profile_model
             try:
                 profile = self._get_profile_instance(profile_model)
-                self._role_profile_exists(profile, role, *args)
             except profile_model.DoesNotExist:
                 self._role_profile_doesnt_exist(role, *args)
+            else:
+                self._role_profile_exists(profile, role, *args)
         return roles_cache[cache_key]
 
     def _get_profile_instance(self, profile_model):

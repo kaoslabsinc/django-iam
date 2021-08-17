@@ -29,7 +29,7 @@ class HideSuperuserUserAdminMixin(BaseModelAdmin):
         ]
 
 
-class IAMUserAdmin(HideSuperuserUserAdminMixin, DjangoUserAdmin):
+class BaseIAMUserAdmin(DjangoUserAdmin):
     list_display = ('username', 'email', 'full_name', 'is_active', 'is_staff')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     list_filter = ('is_staff', 'is_active', 'groups')
@@ -41,3 +41,7 @@ class IAMUserAdmin(HideSuperuserUserAdminMixin, DjangoUserAdmin):
             'fields': ('is_staff',),
         })
     )
+
+
+class IAMUserAdmin(HideSuperuserUserAdminMixin, BaseIAMUserAdmin):
+    pass

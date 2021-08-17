@@ -1,0 +1,7 @@
+name: django-iam
+version: 0.0.0
+description: Roles and access management for django apps
+
+repo_url: https://github.com/kaoslabsinc/django-iam
+project_url: https://github.com/kaoslabsinc/django-iam
+keywords: django, iam, users, auth, authorization, kaos

@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+
+graft docs
+
+graft iam/static
+graft iam/templates
+graft iam/*/static
+graft iam/*/templates

@@ -32,3 +32,16 @@ class SimpleModel(
             'change': is_simple_manager,
             'delete': is_simple_manager,
         }
+
+
+class SimpleProxy(
+    SimpleModel
+):
+    class Meta:
+        proxy = True
+        rules_permissions = {
+            'add': rules.is_superuser,
+            'view': rules.is_superuser,
+            'change': rules.is_superuser,
+            'delete': rules.is_superuser,
+        }

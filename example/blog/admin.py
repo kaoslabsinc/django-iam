@@ -3,12 +3,9 @@ from building_blocks.admin.mixins import EditReadonlyAdminMixin
 from django.contrib import admin
 from rules.contrib.admin import ObjectPermissionsModelAdminMixin
 
-from iam.admin.admin import ProfileAdmin
+from iam.admin.admin import ObjectPermissionsProfileAdmin
 from iam.admin.blocks import HasOwnerAdminBlock
 from .models import BlogManager, BlogAuthor, BlogPost
-
-ObjectPermissionsProfileAdmin = type('ObjectPermissionsProfileAdmin',
-                                     (ObjectPermissionsModelAdminMixin, ProfileAdmin), {})
 
 admin.site.register(BlogManager, ObjectPermissionsProfileAdmin)
 admin.site.register(BlogAuthor, ObjectPermissionsProfileAdmin)

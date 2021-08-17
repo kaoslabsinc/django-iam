@@ -1,6 +1,7 @@
 from building_blocks.admin.admin import ArchivableAdmin
 from building_blocks.admin.mixins import EditReadonlyAdminMixin
 from django.contrib import admin
+from rules.contrib.admin import ObjectPermissionsModelAdminMixin
 
 from .blocks import ProfileAdminBlock
 
@@ -18,3 +19,10 @@ class ProfileAdmin(
     edit_readonly_fields = ProfileAdminBlock.edit_readonly_fields
     autocomplete_fields = ProfileAdminBlock.autocomplete_fields
     fieldsets = ProfileAdminBlock.fieldsets
+
+
+class ObjectPermissionsProfileAdmin(
+    ObjectPermissionsModelAdminMixin,
+    ProfileAdmin
+):
+    pass

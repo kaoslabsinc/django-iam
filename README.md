@@ -100,11 +100,11 @@ As the last step, enable your user model to work with IAM and roles by having it
 
 ```python
 # users/models.py
-from iam.mixins import RolesUserMixin
+from iam.mixins import IAMUserMixin
 
 
 class User(
-    RolesUserMixin,
+    IAMUserMixin,
     ...,
     AbstractUser
 ):
@@ -214,6 +214,27 @@ override_perms(GoodModel, {
 ```
 
 For more examples, check out `example/simple2`.
+
+## Optional tools and utilities (`iam.contrib`)
+
+### `AbstractIAMUser`
+
+`iam.contrib.users.models.AbstractIAMUser`
+
+`django-iam` comes with two abstract user models to assist in your development. `AbstractBaseIAMUser` implements the
+methods required to enable role-based permissions on the user and is the equivalent to django's `AbstractBaseUser`.
+`AbstractIAMUser` implements role-based permissions, `RulesModel` to enable rule based permission on the User model
+itself plus a number of properties such as `full_name`, `display_name`, and `initials`. Please refer to the code to see
+what each method does.
+
+### `IAMUserAdmin`
+
+`iam.contrib.users.admin.IAMUserAdmin`
+
+`IAMUserAdmin` is an enhancement over Django's default `UserAdmin`. It enables users to create staff users right from
+the add user screen (important in certain workflows), hides superusers from non-superusers, and hides fields such as
+user permissions from non-superusers, as they are neither useful in the IAM permissions model, nor every staff user
+should have access to them.
 
 ## Development and Testing
 

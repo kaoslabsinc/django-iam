@@ -2,15 +2,11 @@ import rules
 from django.contrib.auth.models import AbstractUser
 from rules.contrib.models import RulesModel
 
-from iam.mixins import RolesUserMixin
+from iam.contrib.users.models import AbstractIAMUser
 
 
-class User(
-    RolesUserMixin,
-    AbstractUser,
-    RulesModel
-):
-    class Meta(AbstractUser.Meta):
+class User(AbstractIAMUser):
+    class Meta(AbstractIAMUser.Meta):
         rules_permissions = {
             'add': rules.is_staff,
             'change': rules.is_staff,

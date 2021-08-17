@@ -112,6 +112,44 @@ Now only users that have a `SimpleManager` profile can access `SimpleModel`.
 
 For more examples, check out `example/simple`.
 
+## Utilities
+
+## Override permissions
+
+This utility is useful when you install an app that has access permissions set up using `iam` and you are looking to
+override its settings.
+
+Say you want to `outside_app.GoodModel` permissions to be readable by the `fancy_manager` role. The `fancy_manager` role
+is defined in the `fancy` app:
+
+```python
+# settings.py 
+INSTALLED_APPS = [
+    ...,
+    'outside_app',
+    ...,
+    'fancy',  # needs to be installed after `outside_app`
+]
+
+# fancy/rules.py
+from iam.utils import override_perms
+from iam.roles import Role
+from outside_app.models import GoodModel
+
+
+class Roles:
+    fancy_manager = Role('fancy_manager', 'fancy.FancyManager')
+
+
+is_fancy_manager = Roles.fancy_manager.predicate
+
+override_perms(GoodModel, {
+    'view': is_fancy_manager,  # adding view permission to fancy_managers
+})
+```
+
+For more examples, check out `example/simple2`.
+
 ## Development and Testing
 
 ### IDE Setup

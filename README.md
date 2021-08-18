@@ -172,10 +172,10 @@ def some_view(request, pk):
 
 ### AbstractProfileFactory (`iam.factories.AbstractProfileFactory`)
 
-An [AbstractModelFactory](https://github.com/kaoslabsinc/django-building-blocks#abstract-model-factories)) to create
+An [AbstractModelFactory](https://github.com/kaoslabsinc/django-building-blocks#abstract-model-factories) to create
 profiles. When you want to create a profile model, simply inherit from `AbstractProfileFactory.as_abstract_model()`. It
-will create a one to one field to user on your profile model. You can also set options on `.as_abstract_model()` such
-as:
+will create a one to one field to the User model on your profile model. You can also set options
+on `.as_abstract_model()` such as:
 
 ```python
 from iam.factories import AbstractProfileFactory
@@ -185,7 +185,8 @@ AbstractProfileFactory.as_abstract_model(user_optional=True)
 ```
 
 `user_optional=True` makes the user field optional (`null=True, blank=True`). Useful to create profiles that may not be
-associated with a user account (e.g. a blog author that doesn't have an account on the system).
+associated with a user account (e.g. a blog author that doesn't have an account on the system, and another user posts on
+their behalf).
 
 ## Utilities
 
@@ -193,9 +194,8 @@ associated with a user account (e.g. a blog author that doesn't have an account 
 
 In order to delete/deactivate a role, just like the Django user model, do not delete the instance. Instead, you can
 deactivate their profile by calling `instance.archive()`. Objects can be associated with Profile models, and you don't
-want to delete them, lest your database state loses integrity (you already can't because of Django's deletion
-protection). You can also deactivate a profile using the admin interface documented in the
-following [section](#profileadmin).
+want to delete them, lest your database state loses integrity (and Django's deletion protection). You can also
+deactivate a profile using the admin interface documented in the following [section](#profileadmin).
 
 ```python
 instance: ManagerProfile
@@ -234,9 +234,8 @@ which can also give them extra permissions to that blog post since they are the 
 instead of associating the object with the user model directly, you associate the object with the profile. In the blog
 post example, the `BlogPost` model would have a foreign key to the `BlogAuthor` model.
 
-IAM comes with an abstract model factory (to read more about abstract model factories,
-check [`django-building-blocks`](https://github.com/kaoslabsinc/django-building-blocks)) to facilitate this design
-pattern. In the blog post example:
+IAM comes with an abstract model factory `iam.factories.HasOwnerFactory` to facilitate this design pattern. In the blog
+post example:
 
 ```python
 from iam.factories import HasOwnerFactory

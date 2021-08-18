@@ -181,9 +181,11 @@ as:
 from iam.factories import AbstractProfileFactory
 
 AbstractProfileFactory.as_abstract_model(related_name='manager_profiles')
-AbstractProfileFactory.as_abstract_model(user_optional=True)  # To make the user field optional, useful to create
-# profiles that won't be associated with a user account (e.g. a blog author that doesn't have an account on the system).
+AbstractProfileFactory.as_abstract_model(user_optional=True)
 ```
+
+`user_optional=True` makes the user field optional (`null=True, blank=True`). Useful to create profiles that may not be
+associated with a user account (e.g. a blog author that doesn't have an account on the system).
 
 ## Utilities
 

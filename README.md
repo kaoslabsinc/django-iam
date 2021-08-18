@@ -149,19 +149,22 @@ manager_role = Role('app.ManagerProfile')
 
 is_manager = manager_role.predicate
 
-rules.add_perm('app.change_model', is_manager)  # gives `change_model` permission to users who have a ManagerProfile
+# gives `change_model` permission to users who have an active ManagerProfile
+rules.add_perm('app.change_model', is_manager)
 
 
+# gives `add_somemodel` permission to users who have an active ManagerProfile
 class SomeModel(RulesModel):
     class Meta:
         rules_permissions = {
-            'add': is_manager  # gives `add_somemodel` permission to users who have a ManagerProfile
+            'add': is_manager
         }
 
 
 def some_view(request, pk):
     obj = get_object(pk)
-    if is_manager.check(request.user, obj):  # checks if request.user has an active ManagerProfile or not
+    # checks if request.user has an active ManagerProfile or not
+    if is_manager.check(request.user, obj):
         ...
     else:
         ...

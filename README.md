@@ -113,7 +113,74 @@ class User(
 
 Now only users that have a `SimpleManager` profile can access `SimpleModel`.
 
-For more examples, check out `example/simple`.
+For more examples, check out `example/blog`.
+
+## Rationale
+
+This package aims to improve upon the built-in Django authorization and permissions system, by making the system fully
+programmatic and not rely on database objects like the built-in `Group` and `Permission` models. We believe access
+governance in applications and projects should be evident form the code, and should not rely on database states and
+migrations. An instance of an app deployed on a server should not have a different access governance structure than
+another instance somewhere else (which can be the case using the Django built-in authorization system).
+
+The excellent library [`django-rules`](https://github.com/dfunckt/django-rules) drastically improves upon the Django
+permission system by enabling developers to create rule based systems similar to decision trees, without the need for
+the database to be involved. It also allows devs to create object level permissions, something which the built-in
+permission system doesn't allow.
+
+`django-iam` builds on `django-rules` by introducing the concept of Roles and Profiles. In IAM each user is assigned one
+or many roles, which determine their access to certain objects or paths in the application. Each Role has an associated
+`Profile` which is a database model/object with a 1-1 relationship to the `User` model. A user has a Role if their User
+account has the associated profile in an active state. Please check the [Quick Setup](#quick-setup) section for an
+example on how to set IAM up in your Django project.
+
+## Main tools
+
+### Role (`iam.roles.Role`)
+
+The main use of `Role` is to generate a predicate that checks whether a user has a certain profile or not:
+
+```python
+import rules
+from rules.contrib.models import RulesModel
+from iam.roles import Role
+
+manager = Role('app.ManagerProfile')
+
+is_manager = manager.predicate
+
+rules.add_perm('app.change_model', is_manager)
+
+
+class SomeModel(RulesModel):
+    class Meta:
+        rules_permissions = {
+            'add': is_manager
+        }
+
+
+def some_view(request, pk):
+    obj = get_object(pk)
+    if is_manager.check(request.user, obj):  # checks if request.user has an active ManagerProfile or not
+        ...
+    else:
+        ...
+```
+
+### AbstractProfileFactory (`iam.factories.AbstractProfileFactory`)
+
+An [AbstractModelFactory](https://github.com/kaoslabsinc/django-building-blocks#abstract-model-factories)) to create
+profiles. When you want to create a profile model, simply inherit from `AbstractProfileFactory.as_abstract_model()`. It
+will create a one to one field to user on your profile model. You can also set options on `.as_abstract_model()` such
+as:
+
+```python
+from iam.factories import AbstractProfileFactory
+
+AbstractProfileFactory.as_abstract_model(related_name='manager_profiles')
+AbstractProfileFactory.as_abstract_model(user_optional=True)  # To make the user field optional, useful to create
+# profiles that won't be associated with a user account (e.g. a blog author that doesn't have an account on the system).
+```
 
 ## Utilities
 

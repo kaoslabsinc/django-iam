@@ -34,7 +34,7 @@ def test_model_access_archived_profile(django_user_model):
     add_model_perm = SimpleModel.get_perm('add')
     assert user.has_perm(add_model_perm)
 
-    profile.archive().save()
+    profile.deactivate().save()
     user = django_user_model.objects.get(username=username)  # to reset _roles_cache
     assert not user.has_perm(add_model_perm)
 

@@ -20,6 +20,12 @@ class ProfileAdmin(
     autocomplete_fields = ProfileAdminBlock.autocomplete_fields
     fieldsets = ProfileAdminBlock.fieldsets
 
+    @admin.action(permissions=['change'], description="Deactivate")
+    def archive(self, request, queryset):
+        return super(ProfileAdmin, self).archive(request, queryset)
+
+    archive.label = "Deactivate"
+
 
 class ObjectPermissionsProfileAdmin(
     ObjectPermissionsModelAdminMixin,

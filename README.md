@@ -67,7 +67,7 @@ rules.add_perm('app', rules.is_staff)
 
 # django-iam code
 class Roles:
-    simple_manager = Role('simple_manager', 'simple.SimpleManager')
+    simple_manager = Role('simple.SimpleManager')
 
 
 is_simple_manager = Roles.simple_manager.predicate
@@ -203,7 +203,7 @@ from outside_app.models import GoodModel
 
 
 class Roles:
-    fancy_manager = Role('fancy_manager', 'fancy.FancyManager')
+    fancy_manager = Role('fancy.FancyManager')
 
 
 is_fancy_manager = Roles.fancy_manager.predicate

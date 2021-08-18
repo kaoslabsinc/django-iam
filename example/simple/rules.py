@@ -6,7 +6,7 @@ rules.add_perm('simple', rules.is_staff)
 
 
 class Roles:
-    simple_manager = Role('simple_manager', 'simple.SimpleManager')
+    simple_manager = Role('simple.SimpleManager')
 
 
 is_simple_manager = Roles.simple_manager.predicate

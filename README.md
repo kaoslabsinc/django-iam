@@ -149,13 +149,13 @@ manager = Role('app.ManagerProfile')
 
 is_manager = manager.predicate
 
-rules.add_perm('app.change_model', is_manager)
+rules.add_perm('app.change_model', is_manager)  # gives `change_model` permission to users who have a ManagerProfile
 
 
 class SomeModel(RulesModel):
     class Meta:
         rules_permissions = {
-            'add': is_manager
+            'add': is_manager  # gives `add_somemodel` permission to users who have a ManagerProfile
         }
 
 

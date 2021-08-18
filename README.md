@@ -145,9 +145,9 @@ import rules
 from rules.contrib.models import RulesModel
 from iam.roles import Role
 
-manager = Role('app.ManagerProfile')
+manager_role = Role('app.ManagerProfile')
 
-is_manager = manager.predicate
+is_manager = manager_role.predicate
 
 rules.add_perm('app.change_model', is_manager)  # gives `change_model` permission to users who have a ManagerProfile
 

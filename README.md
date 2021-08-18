@@ -180,7 +180,7 @@ as:
 ```python
 from iam.factories import AbstractProfileFactory
 
-AbstractProfileFactory.as_abstract_model(related_name='manager_profiles')
+AbstractProfileFactory.as_abstract_model(related_name='manager_profile')
 AbstractProfileFactory.as_abstract_model(user_optional=True)
 ```
 

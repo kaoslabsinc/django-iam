@@ -286,6 +286,35 @@ override_perms(GoodModel, {
 
 For more examples, check out `example/simple2`.
 
+### Useful predicates
+
+`iam.predicates`
+
+IAM comes with a few commonly used predicates: `is_user` which is generally used to check if a profile belongs to a
+user, and `is_owner` which is used to check if an instance belongs to a profile or not.
+Check `example/sample/models.py:Post`
+for an example of how they are used:
+
+```python
+class Post(
+    HasOwnerFactory.as_abstract_model(AuthorProfile),
+    RulesModel
+):
+    class Meta:
+        rules_permissions = {
+            'add': is_author | is_manager,
+            'change': (is_author & is_owner) | is_manager,
+            'view': (is_author & is_owner) | is_manager,
+            'delete': (is_author & is_owner) | is_manager,
+        }
+```
+
+In this example, in order to access a `Post` instance, the user either needs to be a manager, or be the author (owner)
+of the post.
+
+There is a third predicate called `is_self` that is mainly used in the UserAdmin to limit access to user objects who
+aren't the logged-in user.
+
 ## Optional tools and utilities (`iam.contrib`)
 
 ### `AbstractIAMUser`

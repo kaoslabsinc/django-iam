@@ -46,4 +46,3 @@ class BlogPost(
             'change': is_blog_author & is_owner | is_blog_manager,
             'delete': is_blog_author & is_owner | is_blog_manager,
         }
-

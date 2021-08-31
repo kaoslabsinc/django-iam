@@ -1,4 +1,7 @@
+from django.contrib.auth.models import AnonymousUser
+
 from simple.models import SimpleManager, SimpleModel, SimpleProxy
+from simple.rules import is_simple_manager
 
 
 def test_model_access(django_user_model):
@@ -41,3 +44,8 @@ def test_model_access_archived_profile(django_user_model):
     profile.restore().save()
     user = django_user_model.objects.get(username=username)
     assert user.has_perm(add_model_perm)
+
+
+def test_anon_user(django_user_model):
+    user = AnonymousUser()
+    assert not is_simple_manager(user)

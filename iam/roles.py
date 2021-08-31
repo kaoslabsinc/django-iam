@@ -23,7 +23,10 @@ class Role:
 
     def get_predicate(self, *args):
         def is_role(user):
-            return user.has_role(self, *args)
+            try:
+                return user.has_role(self, *args)
+            except AttributeError:
+                return False
 
         return rules.predicate(is_role, name=f'is_{self.name}')
 

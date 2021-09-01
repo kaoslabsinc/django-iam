@@ -14,7 +14,7 @@ class ProfileAdminBlock(EditReadonlyAdminMixin, AdminBlock):
     edit_readonly_fields = (*HasUserAdminBlock.edit_readonly_fields,)
     autocomplete_fields = HasUserAdminBlock.autocomplete_fields
     fieldsets = (
-        *HasUserAdminBlock.fieldsets,
+        (None, {'fields': HasUserAdminBlock.fields}),
         *ArchivableAdminBlock.fieldsets,
     )
 
@@ -25,6 +25,3 @@ class HasOwnerAdminBlock(EditReadonlyAdminMixin, AdminBlock):
     autocomplete_fields = ('owner',)
     edit_readonly_fields = ('owner',)
     fields = ('owner',)
-    fieldsets = (
-        (None, {'fields': fields}),
-    )

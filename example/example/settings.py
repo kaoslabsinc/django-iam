@@ -40,10 +40,9 @@ INSTALLED_APPS = [
 
     'django_object_actions',
     'rules.apps.AutodiscoverRulesConfig',
+    'iam',
 
     'users',
-    'simple',
-    'simple2',
     'blog',
 ]
 

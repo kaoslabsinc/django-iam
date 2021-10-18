@@ -1,25 +1,13 @@
 from building_blocks.models import HasInitials
 from django.contrib import admin
-from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Value
 from django.db.models.functions import Concat
 from rules.contrib.models import RulesModel
 
-from iam.mixins import IAMUserMixin
-
-
-class AbstractBaseIAMUser(
-    IAMUserMixin,
-    AbstractBaseUser
-):
-    class Meta:
-        abstract = True
-
 
 class AbstractIAMUser(
     HasInitials,
-    IAMUserMixin,
     AbstractUser,
     RulesModel
 ):

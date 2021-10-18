@@ -1,14 +1,20 @@
 import rules
 
 from iam.roles import Role
+from users.rules import Roles as UserRoles
 
 rules.add_perm('blog', rules.is_staff)
 
 
 class Roles:
-    blog_manager = Role('blog.BlogManager')
-    blog_author = Role('blog.BlogAuthor')
+    admin = Role("Blog Admin", parent=UserRoles.admin)
+    author = Role("Blog Author", parent=admin)
 
 
-is_blog_manager = Roles.blog_manager.predicate
-is_blog_author = Roles.blog_author.predicate
+is_blog_admin = Roles.admin.predicate
+is_blog_author = Roles.author.predicate
+
+
+@rules.predicate
+def is_posts_author(user, post):
+    return post and post.author == user

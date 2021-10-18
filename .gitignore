@@ -234,3 +234,4 @@ fabric.properties
 ### kaos configuration files
 .kaos/*
 !.kaos/config.yml
+.db.backup/

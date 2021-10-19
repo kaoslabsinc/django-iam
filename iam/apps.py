@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 from django.db import connections
 
-from .roles import Role
+from .models import Role
 
 
 def table_exists(table_name: str, connection_name: str = 'default') -> bool:

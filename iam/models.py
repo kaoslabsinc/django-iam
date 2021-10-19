@@ -10,10 +10,10 @@ class Role(Group):
         self.parent = kwargs.pop('parent', None)
         super().__init__(*args, **kwargs)
 
-    def upgrade_from_db(self):
+    def refresh_from_db(self, using=None, fields=None):
         group, _ = Group.objects.get_or_create(name=self.name)
         self.id = group.id
-        self.refresh_from_db()
+        super().refresh_from_db(using=using, fields=fields)
 
     @property
     def predicate(self):

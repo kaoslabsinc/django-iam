@@ -14,4 +14,4 @@ def create_roles(sender, **kwargs):
                 if roles := getattr(rules_module, 'Roles', None):
                     for attr in dir(roles):
                         if isinstance(role := getattr(roles, attr), Role):
-                            role.upgrade_from_db()
+                            role.refresh_from_db()

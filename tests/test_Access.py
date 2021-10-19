@@ -12,9 +12,9 @@ def test_BlogPostAccess(client, django_user_model):
     user_author_non_owner = django_user_model.objects.create(username='user_author_non_owner', is_staff=True)
     user_staff = django_user_model.objects.create(username='user_staff', is_staff=True)
 
-    admin_group = UserRoles.admin.group
+    admin_group = UserRoles.admin
     # admin_group = Group.objects.get(name=UserRoles.admin.name)
-    author_group = BlogRoles.author.group
+    author_group = BlogRoles.author
     user_admin.groups.add(admin_group)
     author_group.user_set.add(user_author_owner, user_author_non_owner)
 

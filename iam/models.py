@@ -6,17 +6,14 @@ class Role(Group):
     class Meta:
         proxy = True
 
-    @classmethod
-    def create(cls, **kwargs):
-        parent = kwargs.pop('parent', None)
-        obj, created = cls.objects.get_or_create(**kwargs)
-        if not created:
-            obj.parent = parent
-        return obj
-
     def __init__(self, *args, **kwargs):
         self.parent = kwargs.pop('parent', None)
         super().__init__(*args, **kwargs)
+
+    def upgrade_from_db(self):
+        group, _ = Group.objects.get_or_create(name=self.name)
+        self.id = group.id
+        self.refresh_from_db()
 
     @property
     def predicate(self):

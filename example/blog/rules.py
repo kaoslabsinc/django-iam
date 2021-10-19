@@ -7,8 +7,8 @@ rules.add_perm('blog', rules.is_staff)
 
 
 class Roles:
-    admin = Role.create(name="Blog Admin", parent=UserRoles.admin)
-    author = Role.create(name="Blog Author", parent=admin)
+    admin = Role(name="Blog Admin", parent=UserRoles.admin)
+    author = Role(name="Blog Author", parent=admin)
 
 
 is_blog_admin = Roles.admin.predicate

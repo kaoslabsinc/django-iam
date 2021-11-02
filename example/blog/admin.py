@@ -3,12 +3,7 @@ from building_blocks.admin.mixins import EditReadonlyAdminMixin
 from django.contrib import admin
 from rules.contrib.admin import ObjectPermissionsModelAdminMixin
 
-from iam.admin.admin import ObjectPermissionsProfileAdmin
-from iam.admin.blocks import HasOwnerAdminBlock
-from .models import BlogManager, BlogAuthor, BlogPost
-
-admin.site.register(BlogManager, ObjectPermissionsProfileAdmin)
-admin.site.register(BlogAuthor, ObjectPermissionsProfileAdmin)
+from .models import BlogPost
 
 
 @admin.register(BlogPost)
@@ -19,22 +14,22 @@ class BlogPostAdmin(
 ):
     search_fields = (
         *HasNameAdminBlock.search_fields,
-        *HasOwnerAdminBlock.search_fields,
+        'author',
     )
     list_display = (
         *HasNameAdminBlock.list_display,
-        *HasOwnerAdminBlock.list_display,
+        'author',
     )
     edit_readonly_fields = (
-        *HasOwnerAdminBlock.edit_readonly_fields,
+        'author',
     )
     autocomplete_fields = (
-        *HasOwnerAdminBlock.autocomplete_fields,
+        'author',
     )
     fieldsets = (
         (None, {'fields': (
             *HasNameAdminBlock.fields,
             *HasDescriptionAdminBlock.fields,
-            *HasOwnerAdminBlock.fields,
+            'author',
         )}),
     )

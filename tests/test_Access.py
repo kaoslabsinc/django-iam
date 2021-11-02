@@ -11,10 +11,8 @@ def test_BlogPostAccess(client, django_user_model):
     user_author_non_owner = django_user_model.objects.create(username='user_author_non_owner', is_staff=True)
     user_staff = django_user_model.objects.create(username='user_staff', is_staff=True)
 
-    admin_group = UserRoles.admin.load_group()
-    author_group = BlogRoles.author.load_group()
-    user_admin.groups.add(admin_group)
-    author_group.user_set.add(user_author_owner, user_author_non_owner)
+    UserRoles.admin.assign_to(user_admin)
+    BlogRoles.author.assign_to(user_author_owner, user_author_non_owner)
 
     opts = BlogPost._meta
     obj = BlogPost.objects.create(author=user_author_owner)

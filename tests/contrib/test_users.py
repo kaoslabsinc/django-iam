@@ -28,8 +28,7 @@ def test_IAMUserAdmin(client, django_user_model):
                                                       is_superuser=True)
     user_staff_username = 'user_staff'
     user_staff = django_user_model.objects.create(username=user_staff_username, is_staff=True)
-    admin_group = UserRoles.admin.load_group()
-    user_staff.groups.add(admin_group)
+    UserRoles.admin.assign_to(user_staff)
 
     opts = django_user_model._meta
     admin_url_changelist = reverse(f'admin:{opts.app_label}_{opts.model_name}_changelist')

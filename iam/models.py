@@ -20,6 +20,10 @@ class Role(Group):
         self.refresh_from_db()
         return self
 
+    def assign_to(self, *users):
+        self.refresh_from_db()
+        self.user_set.add(*users)
+
     @property
     def predicate(self):
         predicate = rules.is_group_member(self.name)

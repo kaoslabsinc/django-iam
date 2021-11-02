@@ -5,6 +5,7 @@ class IAMConfig(AppConfig):
     name = 'iam'
 
     def ready(self):
+        from django.contrib.auth.models import Group
         from . import signals  # NoQA
         from . import checks  # NoQA
 
@@ -14,4 +15,9 @@ class IAMConfig(AppConfig):
                     for attr in dir(roles):
                         from iam.models import Role
                         if isinstance(role := getattr(roles, attr), Role):
-                            role.refresh_from_db()
+                            try:
+                                role.refresh_from_db()
+                            except Group.DoesNotExist:
+                                # IAMConfig.ready() is called before checks.check_role_groups(). We can safely ignore
+                                # the missing Group here because it will be flagged by check_role_groups() later
+                                pass

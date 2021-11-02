@@ -1,4 +1,3 @@
-from django.contrib.auth.models import Group
 from django.urls import reverse
 
 from blog.models import BlogPost

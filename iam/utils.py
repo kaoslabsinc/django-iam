@@ -25,5 +25,10 @@ def get_all_roles(app_configs=None):
 def create_role_groups():
     from django.contrib.auth.models import Group
 
+    created_groups = []
     for role in get_all_roles():
-        Group.objects.get_or_create(name=role.name)
+        group, created = Group.objects.get_or_create(name=role.name)
+        if created:
+            created_groups.append(group)
+    return created_groups
+

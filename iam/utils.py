@@ -20,3 +20,10 @@ def get_all_roles(app_configs=None):
                     if isinstance(role := getattr(roles, attr), Role):
                         all_roles.append(role)
     return all_roles
+
+
+def create_role_groups():
+    from django.contrib.auth.models import Group
+
+    for role in get_all_roles():
+        Group.objects.get_or_create(name=role.name)

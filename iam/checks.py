@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from django.core.checks import Warning, register, Tags
 
-from iam.utils import get_all_roles
+from .utils import get_all_roles
 
 
 @register(Tags.models)

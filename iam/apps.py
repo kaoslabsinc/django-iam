@@ -1,4 +1,6 @@
-from django.apps import AppConfig, apps
+from django.apps import AppConfig
+
+from .utils import get_all_roles
 
 
 class IAMConfig(AppConfig):
@@ -9,15 +11,10 @@ class IAMConfig(AppConfig):
         from . import signals  # NoQA
         from . import checks  # NoQA
 
-        for app_config in apps.get_app_configs():
-            if rules_module := getattr(app_config.module, 'rules', None):
-                if roles := getattr(rules_module, 'Roles', None):
-                    for attr in dir(roles):
-                        from iam.models import Role
-                        if isinstance(role := getattr(roles, attr), Role):
-                            try:
-                                role.refresh_from_db()
-                            except Group.DoesNotExist:
-                                # IAMConfig.ready() is called before checks.check_role_groups(). We can safely ignore
-                                # the missing Group here because it will be flagged by check_role_groups() later
-                                pass
+        for role in get_all_roles():
+            try:
+                role.refresh_from_db()
+            except Group.DoesNotExist:
+                # IAMConfig.ready() is called before checks.check_role_groups(). We can safely ignore
+                # the missing Group here because it will be flagged by check_role_groups() later
+                pass

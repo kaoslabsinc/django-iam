@@ -1,8 +1,6 @@
 import rules
 from django.apps import apps
 
-from .models import Role
-
 
 def override_perms(cls, new_rules):
     for perm, rule in new_rules.items():
@@ -10,6 +8,8 @@ def override_perms(cls, new_rules):
 
 
 def get_all_roles(app_configs=None):
+    from .models import Role
+
     if app_configs is None:
         app_configs = apps.get_app_configs()
     all_roles = []

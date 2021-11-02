@@ -21,7 +21,7 @@ def check_role_groups(app_configs, **kwargs):
                             errors.append(
                                 Warning(
                                     f"Group '{role.name}' does not exist.",
-                                    hint="Run manage.py migrate iam --skip-checks",
+                                    hint="Run manage.py iam_migrate_roles",
                                     obj=role,
                                     id="iam.E001"
                                 )

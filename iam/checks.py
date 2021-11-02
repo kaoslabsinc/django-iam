@@ -23,7 +23,7 @@ def check_role_groups(app_configs, **kwargs):
                                     f"Group '{role.name}' does not exist.",
                                     hint="Run manage.py iam_migrate_roles",
                                     obj=role,
-                                    id="iam.E001"
+                                    id='iam.W001'
                                 )
                             )
     return errors

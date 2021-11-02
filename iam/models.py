@@ -16,6 +16,10 @@ class Role(Group):
             self.id = group.id
         super().refresh_from_db(using=using, fields=fields)
 
+    def load_group(self):
+        self.refresh_from_db()
+        return self
+
     @property
     def predicate(self):
         predicate = rules.is_group_member(self.name)

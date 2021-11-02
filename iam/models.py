@@ -12,7 +12,7 @@ class Role(Group):
 
     def refresh_from_db(self, using=None, fields=None):
         if not self.id:
-            group, _ = Group.objects.get_or_create(name=self.name)
+            group = Group.objects.get(name=self.name)
             self.id = group.id
         super().refresh_from_db(using=using, fields=fields)
 

@@ -1,12 +1,12 @@
 from django.apps import apps
 from django.contrib.auth.models import Group
-from django.core.checks import Error, register, Tags
+from django.core.checks import Warning, register, Tags
 
 from iam.models import Role
 
 
 @register(Tags.models)
-def my_check(app_configs, **kwargs):
+def check_role_groups(app_configs, **kwargs):
     errors = []
     if app_configs is None:
         app_configs = apps.get_app_configs()
@@ -19,8 +19,8 @@ def my_check(app_configs, **kwargs):
                             Group.objects.get(name=role.name)
                         except Group.DoesNotExist:
                             errors.append(
-                                Error(
-                                    f"Group '{role.name}' does not exists.",
+                                Warning(
+                                    f"Group '{role.name}' does not exist.",
                                     hint="Run manage.py migrate iam --skip-checks",
                                     obj=role,
                                     id="iam.E001"

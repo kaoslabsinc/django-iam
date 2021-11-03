@@ -1,10 +1,14 @@
 from django.contrib.auth.models import Group
-from django.core.checks import Warning, register, Tags
+from django.core.checks import Warning, register
 
 from .utils import get_all_roles
 
 
-@register(Tags.models)
+class Tags:
+    iam = 'iam'
+
+
+@register(Tags.iam)
 def check_role_groups(app_configs, **kwargs):
     errors = []
     for role in get_all_roles(app_configs):

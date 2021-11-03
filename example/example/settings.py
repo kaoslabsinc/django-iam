@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     'rules.apps.AutodiscoverRulesConfig',
     'users',
+    'blog',
 ]
 
 MIDDLEWARE = [

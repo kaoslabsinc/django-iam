@@ -3,9 +3,11 @@ from rules.contrib.models import RulesModel
 
 from iam.factories import AbstractProfileFactory
 from iam.mixins import IAMUserMixin
+from iam.registry import register_role
 from iam.utils import override_perms
 
 
+@register_role
 class AdminProfile(
     AbstractProfileFactory.as_abstract_model(related_name='admin_profile'),
     RulesModel

@@ -1,10 +1,20 @@
+from iam.registry import registered_roles
+
+
 class IAMUserMixin:
     def __init__(self, *args, **kwargs):
         self._roles = {}
         super(IAMUserMixin, self).__init__(*args, **kwargs)
 
     def load_roles(self):
-        raise NotImplementedError
+        self._roles = {}
+        for model_cls in registered_roles:
+            try:
+                instance = model_cls.objects.active().get(user=self)
+            except model_cls.DoesNotExist:
+                pass
+            else:
+                self.set_role(model_cls, instance)
 
     def set_role(self, model_class, instance):
         self._roles[model_class] = instance

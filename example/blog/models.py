@@ -1,7 +1,9 @@
+from building_blocks.models.factories import HasNameFactory, HasDescriptionFactory
 from django.contrib.auth import get_user_model
 from rules.contrib.models import RulesModel
 
-from iam.factories import AbstractProfileFactory
+from iam.factories import AbstractProfileFactory, HasOwnerFactory
+from iam.predicates import is_owner
 from iam.registry import register_role
 from users.models import AppAdminProfile
 from .rules import is_blog_admin, is_blog_author
@@ -38,4 +40,19 @@ class BlogAuthorProfile(
             'view': is_blog_author,
             'change': is_blog_admin,
             'delete': is_blog_admin,
+        }
+
+
+class BlogPost(
+    HasNameFactory.as_abstract_model(),
+    HasOwnerFactory.as_abstract_model(BlogAuthorProfile, related_name='blog_posts'),
+    HasDescriptionFactory.as_abstract_model(),
+    RulesModel
+):
+    class Meta:
+        rules_permissions = {
+            'add': is_blog_author,
+            'view': is_blog_author,
+            'change': is_blog_author & is_owner,
+            'delete': is_blog_author & is_owner,
         }

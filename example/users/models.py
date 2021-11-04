@@ -7,7 +7,7 @@ from iam.registry import register_role
 from .rules import is_admin
 
 
-@register_role
+@register_role(admin=True)
 class AppAdminProfile(
     AbstractProfileFactory.as_abstract_model(related_name='app_admin_profile'),
     RulesModel

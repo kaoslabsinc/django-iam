@@ -9,7 +9,7 @@ from .rules import is_blog_admin, is_blog_author
 User = get_user_model()
 
 
-@register_role
+@register_role(admin=True)
 class BlogAdminProfile(
     AbstractProfileFactory.as_abstract_model('blog_admin_profile'),
     RulesModel

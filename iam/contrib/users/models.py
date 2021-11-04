@@ -19,6 +19,7 @@ class AbstractBaseIAMUser(
 
 class AbstractIAMUser(
     HasInitials,
+    IAMUserMixin,
     AbstractUser,
     RulesModel
 ):

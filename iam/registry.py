@@ -1,3 +1,6 @@
+ADMIN = 'admin'
+
+
 class RolesRegistry:
     def __init__(self):
         self.registered_roles_dict = {}
@@ -5,7 +8,7 @@ class RolesRegistry:
     def register(self, model_cls=None, admin=False):
         def wrapper(m_cls):
             self.registered_roles_dict[m_cls] = {
-                'admin': admin
+                ADMIN: admin
             }
             return m_cls
 
@@ -18,7 +21,7 @@ class RolesRegistry:
         return set(self.registered_roles_dict.keys())
 
     def get_admin_roles(self):
-        return set(k for k, v in self.registered_roles_dict.items() if v['admin'])
+        return set(k for k, v in self.registered_roles_dict.items() if v[ADMIN])
 
 
 registry = RolesRegistry()

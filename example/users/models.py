@@ -8,8 +8,8 @@ from .rules import is_admin
 
 
 @register_role
-class AdminProfile(
-    AbstractProfileFactory.as_abstract_model(related_name='admin_profile'),
+class AppAdminProfile(
+    AbstractProfileFactory.as_abstract_model(related_name='app_admin_profile'),
     RulesModel
 ):
     class Meta:

@@ -3,7 +3,7 @@ from rules.contrib.models import RulesModel
 
 from iam.factories import AbstractProfileFactory
 from iam.registry import register_role
-from users.models import AdminProfile
+from users.models import AppAdminProfile
 from .rules import is_blog_admin, is_blog_author
 
 User = get_user_model()
@@ -14,7 +14,7 @@ class BlogAdminProfile(
     AbstractProfileFactory.as_abstract_model('blog_admin_profile'),
     RulesModel
 ):
-    parent = AdminProfile
+    parent = AppAdminProfile
 
     class Meta:
         rules_permissions = {

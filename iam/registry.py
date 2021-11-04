@@ -14,11 +14,14 @@ class RolesRegistry:
         else:
             return wrapper(model_cls)
 
-    @property
-    def registered_roles(self):
+    def get_registered_roles(self):
         return set(self.registered_roles_dict.keys())
+
+    def get_admin_roles(self):
+        return set(k for k, v in self.registered_roles_dict.items() if v['admin'])
 
 
 registry = RolesRegistry()
 register_role = registry.register
-registered_roles = registry.registered_roles
+get_registered_roles = registry.get_registered_roles
+get_admin_roles = registry.get_admin_roles

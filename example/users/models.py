@@ -4,6 +4,7 @@ from rules.contrib.models import RulesModel
 from iam import AbstractProfileFactory, register_role
 from iam.contrib.predicates import is_any_admin
 from iam.contrib.users.models import AbstractIAMUser
+from iam.contrib.utils import get_profile_class_verbose_name_plural
 from .rules import is_app_admin
 
 
@@ -13,6 +14,7 @@ class AppAdminProfile(
     RulesModel
 ):
     class Meta:
+        verbose_name_plural = get_profile_class_verbose_name_plural('AppAdminProfile')
         rules_permissions = {
             'add': is_app_admin,
             'view': is_app_admin,

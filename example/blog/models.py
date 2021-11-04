@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from rules.contrib.models import RulesModel
 
 from iam import AbstractProfileFactory, HasOwnerFactory, register_role
+from iam.contrib.utils import get_profile_class_verbose_name_plural
 from iam.predicates import is_owner
 from users.models import AppAdminProfile
 from .rules import is_blog_admin, is_blog_author
@@ -18,6 +19,7 @@ class BlogAdminProfile(
     parent = AppAdminProfile
 
     class Meta:
+        verbose_name_plural = get_profile_class_verbose_name_plural('BlogAdminProfile')
         rules_permissions = {
             'add': is_blog_admin,
             'view': is_blog_admin,
@@ -34,6 +36,7 @@ class BlogAuthorProfile(
     parent = BlogAdminProfile
 
     class Meta:
+        verbose_name_plural = get_profile_class_verbose_name_plural('BlogAuthorProfile')
         rules_permissions = {
             'add': is_blog_admin,
             'view': is_blog_author,

@@ -22,5 +22,6 @@ class Migration(migrations.Migration):
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='blog_author_profile', to=settings.AUTH_USER_MODEL)),
             ],
             bases=(rules.contrib.models.RulesModelMixin, models.Model),
+            options={'verbose_name_plural': 'blog author profiles 👤'},
         ),
     ]

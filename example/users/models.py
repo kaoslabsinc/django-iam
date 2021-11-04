@@ -3,7 +3,7 @@ from rules.contrib.models import RulesModel
 
 from iam import AbstractProfileFactory, register_role
 from iam.contrib.predicates import is_any_admin
-from iam.contrib.users import AbstractIAMUser
+from iam.contrib.users.models import AbstractIAMUser
 from .rules import is_app_admin
 
 

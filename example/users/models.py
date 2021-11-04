@@ -4,7 +4,7 @@ from rules.contrib.models import RulesModel
 from iam.factories import AbstractProfileFactory
 from iam.mixins import IAMUserMixin
 from iam.registry import register_role
-from .predicates import is_admin_role
+from iam.predicates import is_admin_role
 from .rules import is_app_admin
 
 

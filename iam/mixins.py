@@ -1,4 +1,4 @@
-from iam.registry import registered_roles
+from iam.registry import get_registered_roles
 
 
 class IAMUserMixin:
@@ -8,7 +8,7 @@ class IAMUserMixin:
 
     def load_roles(self):
         self._roles = {}
-        for model_cls in registered_roles:
+        for model_cls in get_registered_roles():
             try:
                 instance = model_cls.objects.active().get(user=self)
             except model_cls.DoesNotExist:

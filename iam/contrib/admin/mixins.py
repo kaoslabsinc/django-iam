@@ -13,3 +13,8 @@ class AutoOwnerAdminMixin(admin.ModelAdmin):
             except profile_model.DoesNotExist:
                 pass
         return field
+
+
+__all__ = [
+    'AutoOwnerAdminMixin',
+]

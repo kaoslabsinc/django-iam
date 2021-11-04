@@ -36,3 +36,9 @@ class AbstractIAMUser(
     @property
     def display_name(self):
         return self.full_name if self.full_name.strip() else self.username
+
+
+__all__ = [
+    'AbstractBaseIAMUser',
+    'AbstractIAMUser',
+]

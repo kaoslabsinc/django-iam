@@ -32,3 +32,9 @@ class ObjectPermissionsProfileAdmin(
     ProfileAdmin
 ):
     pass
+
+
+__all__ = [
+    'ProfileAdmin',
+    'ObjectPermissionsProfileAdmin',
+]

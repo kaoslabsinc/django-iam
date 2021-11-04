@@ -45,3 +45,10 @@ class BaseIAMUserAdmin(DjangoUserAdmin):
 
 class IAMUserAdmin(HideSuperuserUserAdminMixin, BaseIAMUserAdmin):
     pass
+
+
+__all__ = [
+    'HideSuperuserUserAdminMixin',
+    'BaseIAMUserAdmin',
+    'IAMUserAdmin',
+]

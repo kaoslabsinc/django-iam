@@ -25,3 +25,9 @@ class HasOwnerAdminBlock(EditReadonlyAdminMixin, AdminBlock):
     autocomplete_fields = ('owner',)
     edit_readonly_fields = ('owner',)
     fields = ('owner',)
+
+
+__all__ = [
+    'ProfileAdminBlock',
+    'HasOwnerAdminBlock',
+]

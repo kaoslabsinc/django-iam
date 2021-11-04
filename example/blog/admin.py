@@ -1,9 +1,7 @@
 from building_blocks.admin.blocks import HasNameAdminBlock, HasDescriptionAdminBlock
 from django.contrib import admin
 
-from iam.contrib.admin.admin import ObjectPermissionsProfileAdmin
-from iam.contrib.admin.blocks import HasOwnerAdminBlock
-from iam.contrib.admin.mixins import AutoOwnerAdminMixin
+from iam.contrib.admin import AutoOwnerAdminMixin, HasOwnerAdminBlock, ObjectPermissionsProfileAdmin
 from .models import BlogAdminProfile, BlogAuthorProfile, BlogPost
 
 admin.site.register(BlogAdminProfile, ObjectPermissionsProfileAdmin)

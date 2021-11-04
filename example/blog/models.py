@@ -53,6 +53,6 @@ class BlogPost(
         rules_permissions = {
             'add': is_blog_author,
             'view': is_blog_author,
-            'change': is_blog_author & is_owner,
-            'delete': is_blog_author & is_owner,
+            'change': is_blog_admin | is_blog_author & is_owner,
+            'delete': is_blog_admin | is_blog_author & is_owner,
         }

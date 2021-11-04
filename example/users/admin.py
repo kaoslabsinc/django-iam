@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.contrib.auth.admin import UserAdmin
 
+from iam.contrib.users.admin import IAMUserAdmin
 from .models import AppAdminProfile
 
 User = get_user_model()
 
-admin.site.register(User, UserAdmin)
+admin.site.register(User, IAMUserAdmin)
 
 
 @admin.register(AppAdminProfile)

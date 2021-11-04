@@ -1,10 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from rules.contrib.models import RulesModel
 
+from iam.contrib.users.models import AbstractIAMUser
 from iam.factories import AbstractProfileFactory
-from iam.mixins import IAMUserMixin
-from iam.registry import register_role
 from iam.predicates import is_admin_role
+from iam.registry import register_role
 from .rules import is_app_admin
 
 
@@ -22,8 +22,8 @@ class AppAdminProfile(
         }
 
 
-class User(IAMUserMixin, AbstractUser, RulesModel):
-    class Meta(AbstractUser.Meta):
+class User(AbstractIAMUser):
+    class Meta(AbstractIAMUser.Meta):
         rules_permissions = {
             'add': is_admin_role,
             'view': is_admin_role,

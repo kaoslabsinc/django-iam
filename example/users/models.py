@@ -3,7 +3,7 @@ from rules.contrib.models import RulesModel
 
 from iam.contrib.users.models import AbstractIAMUser
 from iam.factories import AbstractProfileFactory
-from iam.predicates import is_admin_role
+from iam.predicates import is_any_admin
 from iam.registry import register_role
 from .rules import is_app_admin
 
@@ -25,8 +25,8 @@ class AppAdminProfile(
 class User(AbstractIAMUser):
     class Meta(AbstractIAMUser.Meta):
         rules_permissions = {
-            'add': is_admin_role,
-            'view': is_admin_role,
-            'change': is_admin_role,
+            'add': is_any_admin,
+            'view': is_any_admin,
+            'change': is_any_admin,
             'delete': is_app_admin,
         }

@@ -41,3 +41,9 @@ class HasOwnerFactory(AbstractModelFactory):
                                     **generate_field_kwargs(optional_null=optional))
 
         return HasOwner
+
+
+__all__ = [
+    'AbstractProfileFactory',
+    'HasOwnerFactory',
+]

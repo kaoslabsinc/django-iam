@@ -13,15 +13,7 @@ class RolePredicateMixin(models.Model):
     @classmethod
     def get_predicate(cls, extra_check=DEFAULT_EXTRA_CHECK):
         def has_role(user):
-            model_cls = cls._meta.model
-            profile_instance = user.roles.get(model_cls)  # None, False, instance
-            if profile_instance is None:
-                try:
-                    profile_instance = model_cls.objects.active().get(user=user)
-                except model_cls.DoesNotExist:
-                    profile_instance = False
-                finally:
-                    user.set_role(model_cls, profile_instance)
+            profile_instance = user.get_or_set_role(cls._meta.model)
             return bool(profile_instance) and extra_check(profile_instance)
 
         role_name = cls._meta.verbose_name.rstrip(' profile').replace(' ', '_')

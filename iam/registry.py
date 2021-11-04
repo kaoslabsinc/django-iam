@@ -1,15 +1,10 @@
-ADMIN = 'admin'
-
-
 class RolesRegistry:
     def __init__(self):
         self.registered_roles_dict = {}
 
-    def register(self, model_cls=None, admin=False):
+    def register(self, model_cls=None, **conf):
         def wrapper(m_cls):
-            self.registered_roles_dict[m_cls] = {
-                ADMIN: admin
-            }
+            self.registered_roles_dict[m_cls] = {**conf}
             return m_cls
 
         if model_cls is None:
@@ -17,14 +12,12 @@ class RolesRegistry:
         else:
             return wrapper(model_cls)
 
-    def get_registered_roles(self):
-        return set(self.registered_roles_dict.keys())
-
-    def get_admin_roles(self):
-        return set(k for k, v in self.registered_roles_dict.items() if v[ADMIN])
+    def get_registered_roles(self, filter_func=lambda conf: True):
+        return set(model_cls
+                   for model_cls, conf in self.registered_roles_dict.items()
+                   if filter_func(conf))
 
 
 registry = RolesRegistry()
 register_role = registry.register
 get_registered_roles = registry.get_registered_roles
-get_admin_roles = registry.get_admin_roles

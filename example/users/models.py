@@ -5,7 +5,7 @@ from iam.factories import AbstractProfileFactory
 from iam.mixins import IAMUserMixin
 from iam.registry import register_role
 from .predicates import is_admin_role
-from .rules import is_admin
+from .rules import is_app_admin
 
 
 @register_role(admin=True)
@@ -15,10 +15,10 @@ class AppAdminProfile(
 ):
     class Meta:
         rules_permissions = {
-            'add': is_admin,
-            'view': is_admin,
-            'change': is_admin,
-            'delete': is_admin,
+            'add': is_app_admin,
+            'view': is_app_admin,
+            'change': is_app_admin,
+            'delete': is_app_admin,
         }
 
 
@@ -28,5 +28,5 @@ class User(IAMUserMixin, AbstractUser, RulesModel):
             'add': is_admin_role,
             'view': is_admin_role,
             'change': is_admin_role,
-            'delete': is_admin,
+            'delete': is_app_admin,
         }

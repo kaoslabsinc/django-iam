@@ -1,7 +1,7 @@
 from .factories import *
 from .registry import register_role
 
-__version__ = '0.3.0-dev4'
+__version__ = '0.3.0-dev5'
 __version_info__ = tuple(
     [
         int(num) if num.isdigit() else num

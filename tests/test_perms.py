@@ -109,6 +109,21 @@ class TestPerms:
         assert has_perm(BlogPost, 'delete', user_app_admin)
         assert has_perm(BlogPost, 'delete', user_app_admin, obj)
 
+    def test_override(self, user_generic, obj):
+        override_perms(BlogPost, {
+            'add': rules.always_allow,
+            'view': rules.always_allow,
+            'change': rules.always_allow,
+            'delete': rules.always_allow,
+        })
+        assert has_perm(BlogPost, 'add', user_generic)
+        assert has_perm(BlogPost, 'view', user_generic)
+        assert has_perm(BlogPost, 'view', user_generic, obj)
+        assert has_perm(BlogPost, 'change', user_generic, obj)
+        assert has_perm(BlogPost, 'change', user_generic, obj)
+        assert has_perm(BlogPost, 'delete', user_generic, obj)
+        assert has_perm(BlogPost, 'delete', user_generic, obj)
+
 
 class TestAdminRolePerms:
     @pytest.fixture

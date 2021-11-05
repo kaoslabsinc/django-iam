@@ -1,4 +1,3 @@
-from .factories import *
 from .registry import register_role
 
 __version__ = '0.3.0-dev5'

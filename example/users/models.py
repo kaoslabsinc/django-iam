@@ -1,7 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from rules.contrib.models import RulesModel
 
-from iam import AbstractProfileFactory, register_role
+from iam import register_role
+from iam.factories import AbstractProfileFactory
 from iam.contrib.predicates import is_any_admin
 from iam.contrib.users.models import AbstractIAMUser
 from iam.contrib.utils import get_profile_class_verbose_name_plural

@@ -2,7 +2,8 @@ from building_blocks.models.factories import HasNameFactory, HasDescriptionFacto
 from django.contrib.auth import get_user_model
 from rules.contrib.models import RulesModel
 
-from iam import AbstractProfileFactory, HasOwnerFactory, register_role
+from iam import register_role
+from iam.factories import AbstractProfileFactory, HasOwnerFactory
 from iam.contrib.utils import get_profile_class_verbose_name_plural
 from iam.predicates import is_owner
 from users.models import AppAdminProfile

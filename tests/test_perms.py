@@ -109,6 +109,16 @@ class TestPerms:
         assert has_perm(BlogPost, 'delete', user_app_admin)
         assert has_perm(BlogPost, 'delete', user_app_admin, obj)
 
+    def test_user_app_admin_deactivated(self, user_app_admin, obj):
+        AppAdminProfile.objects.get(user=user_app_admin).deactivate().save()
+        assert not has_perm(BlogPost, 'add', user_app_admin)
+        assert not has_perm(BlogPost, 'view', user_app_admin)
+        assert not has_perm(BlogPost, 'view', user_app_admin, obj)
+        assert not has_perm(BlogPost, 'change', user_app_admin)
+        assert not has_perm(BlogPost, 'change', user_app_admin, obj)
+        assert not has_perm(BlogPost, 'delete', user_app_admin)
+        assert not has_perm(BlogPost, 'delete', user_app_admin, obj)
+
     def test_override(self, user_generic, obj):
         override_perms(BlogPost, {
             'add': rules.always_allow,

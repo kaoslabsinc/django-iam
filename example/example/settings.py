@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rules.apps.AutodiscoverRulesConfig',
     'django_object_actions',
+    'iam',
 
     'users',
     'blog',

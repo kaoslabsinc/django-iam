@@ -4,6 +4,22 @@ from blog.models import BlogAuthorProfile, BlogPost
 from users.models import AppAdminProfile
 
 
+def test_ProfileAdmin(client, django_user_model):
+    opts = BlogAuthorProfile._meta
+    admin_url_changelist = reverse(f'admin:{opts.app_label}_{opts.model_name}_changelist')
+
+    user = django_user_model.objects.create(username='user', is_staff=True)
+    profile = BlogAuthorProfile.objects.create(user=user)
+
+    superuser = django_user_model.objects.create(username='superuser', is_staff=True, is_superuser=True)
+    client.force_login(superuser)
+    client.post(admin_url_changelist,
+                {'action': 'archive', '_selected_action': [profile.id]})
+
+    profile.refresh_from_db()
+    assert not profile.is_active
+
+
 def test_AutoOwnerAdminMixin(client, django_user_model):
     opts = BlogPost._meta
     admin_url_add = reverse(f'admin:{opts.app_label}_{opts.model_name}_add')

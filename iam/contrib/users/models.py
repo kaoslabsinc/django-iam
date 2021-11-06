@@ -27,6 +27,7 @@ class AbstractIAMUser(
         abstract = True
 
     take_initials_from = 'display_name'
+    id_field = 'username'
 
     @property
     @admin.display(ordering=Concat('first_name', Value(' '), 'last_name'))
@@ -36,6 +37,10 @@ class AbstractIAMUser(
     @property
     def display_name(self):
         return self.full_name if self.full_name.strip() else self.username
+
+    @property
+    def display_id(self):
+        return getattr(self, self.id_field)
 
 
 __all__ = [

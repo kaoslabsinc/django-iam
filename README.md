@@ -39,7 +39,7 @@ Create a profile for the role, e.g.
 # app/models.py
 from django.db import models
 from iam.factories import AbstractProfileFactory
-from iam.contrib.utils import get_profile_class_verbose_name_plural
+from iam.contrib.utils import get_profile_cls_verbose_name_plural
 
 
 class SomeRoleProfile(
@@ -50,7 +50,7 @@ class SomeRoleProfile(
 
     class Meta:
         # Adds a little 👤 emoji to the name in admin, to make it clear this is a profile model
-        verbose_name_plural = get_profile_class_verbose_name_plural('BlogAdminProfile')
+        verbose_name_plural = get_profile_cls_verbose_name_plural('BlogAdminProfile')
 ```
 
 In your app, create a `rules.py`:

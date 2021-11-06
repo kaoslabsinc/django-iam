@@ -126,6 +126,36 @@ or many roles, which determine their access to certain objects or paths in the a
 account has the associated profile in an active state. Please check the [Quick Setup](#quick-setup) section for an
 example on how to set IAM up in your Django project.
 
+## Main tools
+
+### registry
+
+### AbstractProfileFactory (`iam.factories.AbstractProfileFactory`)
+
+### `lazy_get_predicate`
+
+### Deactivating profiles
+
+### predicates
+
+### `HasOwnerFactory`
+
+### Override permissions
+
+## Optional tools and utilities (`iam.contrib`)
+
+### `ProfileAdmin`
+
+### `AutoOwnerAdminMixin`
+
+### Admin roles
+
+### `AbstractIAMUser`
+
+### `IAMUserAdmin`
+
+### `get_profile_class_verbose_name_plural`
+
 ## Development and Testing
 
 ### IDE Setup

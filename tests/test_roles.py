@@ -1,4 +1,5 @@
 from blog.models import BlogAuthorProfile, BlogAdminProfile
+from simple.models import SimpleAdminProfile
 from users.models import AppAdminProfile
 
 
@@ -11,6 +12,7 @@ def test_load_roles(django_user_model):
     assert user.roles == {
         AppAdminProfile: app_admin_profile,
         BlogAdminProfile: False,
+        SimpleAdminProfile: False,
         BlogAuthorProfile: blog_author_profile,
     }
 
@@ -20,5 +22,6 @@ def test_load_roles(django_user_model):
     assert user.roles == {
         AppAdminProfile: app_admin_profile,
         BlogAdminProfile: False,
+        SimpleAdminProfile: False,
         BlogAuthorProfile: False,
     }

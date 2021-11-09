@@ -29,17 +29,21 @@ class AbstractProfileFactory(AbstractModelFactory):
 
 class HasOwnerFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(owner_profile_class, related_name=None,
-                          one_to_one=False, optional=False, on_delete=None):
+    def as_abstract_model(owner_profile_class, owner_alias=None, related_name=None,
+                          one_to_one=False, optional=False, on_delete=None, **kwargs):
         owner_field_cls, on_delete = AbstractModelFactory._get_fk_params(one_to_one, optional, on_delete)
+        verbose_name = kwargs.pop('verbose_name', None)
 
         class HasOwner(models.Model):
             class Meta:
                 abstract = True
 
-            owner = owner_field_cls(owner_profile_class, on_delete=on_delete, related_name=related_name,
-                                    **generate_field_kwargs(optional_null=optional))
+            owner = owner_field_cls(owner_profile_class, on_delete=on_delete,
+                                    verbose_name=verbose_name or owner_alias.replace('_', ' '),
+                                    related_name=related_name,
+                                    **generate_field_kwargs(optional_null=optional), **kwargs)
 
+        setattr(HasOwner, owner_alias, property(lambda self: self.owner))
         return HasOwner
 
 

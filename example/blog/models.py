@@ -5,7 +5,7 @@ from rules.contrib.models import RulesModel
 from iam import register_role
 from iam.contrib.utils import get_profile_cls_verbose_name_plural
 from iam.factories import AbstractProfileFactory, HasOwnerFactory
-from iam.predicates import is_owner
+from iam.predicates import is_owner, is_user
 from users.models import AppAdminProfile
 from .rules import is_blog_admin, is_blog_author
 
@@ -41,7 +41,7 @@ class BlogAuthorProfile(
         rules_permissions = {
             'add': is_blog_admin,
             'view': is_blog_author,
-            'change': is_blog_admin,
+            'change': is_blog_author & is_user,
             'delete': is_blog_admin,
         }
 

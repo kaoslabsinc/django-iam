@@ -33,13 +33,14 @@ class HasOwnerFactory(AbstractModelFactory):
                           one_to_one=False, optional=False, on_delete=None, **kwargs):
         owner_field_cls, on_delete = AbstractModelFactory._get_fk_params(one_to_one, optional, on_delete)
         verbose_name = kwargs.pop('verbose_name', None)
+        verbose_owner_alias = owner_alias.replace('_', ' ') if owner_alias is not None else None
 
         class HasOwner(models.Model):
             class Meta:
                 abstract = True
 
             owner = owner_field_cls(owner_profile_class, on_delete=on_delete,
-                                    verbose_name=verbose_name or owner_alias.replace('_', ' '),
+                                    verbose_name=verbose_name or verbose_owner_alias,
                                     related_name=related_name,
                                     **generate_field_kwargs(optional_null=optional), **kwargs)
 

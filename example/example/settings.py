@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'iam',
 
     'users',
+    'simple',
     'blog',
 ]
 

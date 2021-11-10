@@ -43,8 +43,8 @@ class HasOwnerFactory(AbstractModelFactory):
                                     verbose_name=verbose_name or verbose_owner_alias,
                                     related_name=related_name,
                                     **generate_field_kwargs(optional_null=optional), **kwargs)
-
-        setattr(HasOwner, owner_alias, property(lambda self: self.owner))
+        if owner_alias:
+            setattr(HasOwner, owner_alias, property(lambda self: self.owner))
         return HasOwner
 
 

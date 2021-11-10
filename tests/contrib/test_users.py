@@ -19,7 +19,6 @@ def test_AbstractIAMUser(django_user_model):
     assert user.initials == "UM"
 
 
-
 def test_IAMUserAdmin(client, django_user_model):
     default_user_post_dict = {
         'is_active': True,

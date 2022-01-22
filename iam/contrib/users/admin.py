@@ -24,8 +24,11 @@ class HideSuperuserUserAdminMixin(BaseModelAdmin):
         fieldsets = super().get_fieldsets(request, obj) or ()
         return [
             (fieldset_name,
-             {'fields': [field for field in values['fields'] if field not in exclude]})
-            for fieldset_name, values in fieldsets
+             {
+                 **fieldset_dict,
+                 'fields': [field for field in fieldset_dict['fields'] if field not in exclude]
+             })
+            for fieldset_name, fieldset_dict in fieldsets
         ]
 
 

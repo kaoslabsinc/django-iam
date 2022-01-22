@@ -237,6 +237,12 @@ class TestAppRolePerms:
         return user
 
     @pytest.fixture
+    def user_blog_author_privileged(self, django_user_model):
+        user = django_user_model.objects.create(username='user_blog_author_privileged', is_staff=True)
+        BlogAuthorProfile.objects.create(user=user, is_privileged=True)
+        return user
+
+    @pytest.fixture
     def obj(self, django_user_model):
         user = django_user_model.objects.create(username='username')
         return BlogAuthorProfile.objects.create(user=user)
@@ -251,3 +257,6 @@ class TestAppRolePerms:
                         BlogAuthorProfile.objects.get(user=user_blog_author))
         assert not has_perm(BlogAuthorProfile, 'delete', user_blog_author)
         assert not has_perm(BlogAuthorProfile, 'delete', user_blog_author, obj)
+
+    def test_user_blog_author_privileged(self, user_blog_author_privileged, obj):
+        assert has_perm(BlogAuthorProfile, 'add', user_blog_author_privileged)

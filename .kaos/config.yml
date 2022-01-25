@@ -1,5 +1,5 @@
 name: django-iam
-version: 0.2.0-rc7
+version: 0.2.0-dev7
 description: Roles and access management for django apps
 
 repo_url: https://github.com/kaoslabsinc/django-iam

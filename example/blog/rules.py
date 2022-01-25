@@ -11,4 +11,4 @@ is_blog_author = lazy_get_predicate('blog.BlogAuthorProfile')
 @rules.predicate
 def is_privileged_blog_author(user):
     from .models import BlogAuthorProfile
-    return BlogAuthorProfile.check_user(lambda profile: profile.is_privileged)(user)
+    return BlogAuthorProfile.check_is_privileged(user)

@@ -1,7 +1,7 @@
-from building_blocks.admin.blocks import HasNameAdminBlock, HasDescriptionAdminBlock
+from building_blocks.admin import HasNameAdmin, HasDescriptionAdmin
 from django.contrib import admin
 
-from iam.contrib.admin import AutoOwnerAdminMixin, HasOwnerAdminBlock, ObjectPermissionsProfileAdmin
+from iam.contrib.admin import AutoOwnerAdminMixin, HasOwnerAdmin, ObjectPermissionsProfileAdmin
 from .models import BlogAdminProfile, BlogAuthorProfile, BlogPost
 
 admin.site.register(BlogAdminProfile, ObjectPermissionsProfileAdmin)
@@ -14,17 +14,17 @@ class BlogPostAdmin(
     admin.ModelAdmin
 ):
     search_fields = (
-        *HasNameAdminBlock.search_fields,
-        *HasOwnerAdminBlock.search_fields
+        *HasNameAdmin.search_fields,
+        *HasOwnerAdmin.search_fields
     )
     list_display = (
-        *HasNameAdminBlock.list_display,
-        *HasOwnerAdminBlock.list_display
+        *HasNameAdmin.list_display,
+        *HasOwnerAdmin.list_display
     )
-    autocomplete_fields = HasOwnerAdminBlock.autocomplete_fields
-    edit_readonly_fields = HasOwnerAdminBlock.edit_readonly_fields
+    autocomplete_fields = HasOwnerAdmin.autocomplete_fields
+    edit_readonly_fields = HasOwnerAdmin.edit_readonly_fields
     fields = (
-        *HasNameAdminBlock.fields,
-        *HasOwnerAdminBlock.fields,
-        *HasDescriptionAdminBlock.fields,
+        *HasNameAdmin.fields,
+        *HasOwnerAdmin.fields,
+        *HasDescriptionAdmin.fields,
     )

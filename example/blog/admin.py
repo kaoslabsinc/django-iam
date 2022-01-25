@@ -10,6 +10,7 @@ admin.site.register(BlogAuthorProfile, ObjectPermissionsProfileAdmin)
 
 @admin.register(BlogPost)
 class BlogPostAdmin(
+    HasOwnerAdmin,
     AutoOwnerAdminMixin,
     admin.ModelAdmin
 ):

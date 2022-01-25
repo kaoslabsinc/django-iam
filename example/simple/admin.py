@@ -9,6 +9,7 @@ admin.site.register(SimpleAdminProfile, ObjectPermissionsProfileAdmin)
 
 @admin.register(SimpleObject)
 class SimpleObjectAdmin(
+    HasOwnerAdmin,
     AutoOwnerAdminMixin,
     admin.ModelAdmin
 ):

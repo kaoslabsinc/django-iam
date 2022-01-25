@@ -39,6 +39,10 @@ class BlogAuthorProfile(
 
     is_privileged = models.BooleanField(default=False)
 
+    @staticmethod
+    def check_is_privileged(user):
+        return BlogAuthorProfile.check_user(lambda profile: profile.is_privileged)(user)
+
     class Meta:
         verbose_name_plural = get_profile_cls_verbose_name_plural('BlogAuthorProfile')
         rules_permissions = {

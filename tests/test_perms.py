@@ -110,7 +110,9 @@ class TestPerms:
         assert has_perm(BlogPost, 'delete', user_app_admin, obj)
 
     def test_user_app_admin_deactivated(self, user_app_admin, obj):
-        AppAdminProfile.objects.get(user=user_app_admin).deactivate().save()
+        profile = AppAdminProfile.objects.get(user=user_app_admin)
+        profile.deactivate()
+        profile.save()
         assert not has_perm(BlogPost, 'add', user_app_admin)
         assert not has_perm(BlogPost, 'view', user_app_admin)
         assert not has_perm(BlogPost, 'view', user_app_admin, obj)
@@ -225,3 +227,36 @@ class TestAdminRolePerms:
         assert has_perm(User, 'change', user_generic, obj)
         assert has_perm(User, 'delete', user_generic, obj)
         assert has_perm(User, 'delete', user_generic, obj)
+
+
+class TestAppRolePerms:
+    @pytest.fixture
+    def user_blog_author(self, django_user_model):
+        user = django_user_model.objects.create(username='user_blog_author', is_staff=True)
+        BlogAuthorProfile.objects.create(user=user)
+        return user
+
+    @pytest.fixture
+    def user_blog_author_privileged(self, django_user_model):
+        user = django_user_model.objects.create(username='user_blog_author_privileged', is_staff=True)
+        BlogAuthorProfile.objects.create(user=user, is_privileged=True)
+        return user
+
+    @pytest.fixture
+    def obj(self, django_user_model):
+        user = django_user_model.objects.create(username='username')
+        return BlogAuthorProfile.objects.create(user=user)
+
+    def test_user_blog_author(self, user_blog_author, obj):
+        assert not has_perm(BlogAuthorProfile, 'add', user_blog_author)
+        assert has_perm(BlogAuthorProfile, 'view', user_blog_author)
+        assert has_perm(BlogAuthorProfile, 'view', user_blog_author, obj)
+        assert has_perm(BlogAuthorProfile, 'change', user_blog_author)
+        assert not has_perm(BlogAuthorProfile, 'change', user_blog_author, obj)
+        assert has_perm(BlogAuthorProfile, 'change', user_blog_author,
+                        BlogAuthorProfile.objects.get(user=user_blog_author))
+        assert not has_perm(BlogAuthorProfile, 'delete', user_blog_author)
+        assert not has_perm(BlogAuthorProfile, 'delete', user_blog_author, obj)
+
+    def test_user_blog_author_privileged(self, user_blog_author_privileged, obj):
+        assert has_perm(BlogAuthorProfile, 'add', user_blog_author_privileged)

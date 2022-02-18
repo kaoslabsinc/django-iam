@@ -1,6 +1,6 @@
 from building_blocks.models import Archivable
-from building_blocks.models.factories import AbstractModelFactory, HasUserFactory
-from building_blocks.models.utils import generate_field_kwargs
+from building_blocks.factories import AbstractModelFactory, HasUserFactory
+from building_blocks.factories.utils import generate_field_kwargs
 from django.db import models
 
 from .abstracts import RolePredicateMixin

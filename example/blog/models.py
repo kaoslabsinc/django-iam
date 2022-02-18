@@ -1,4 +1,4 @@
-from building_blocks.models.factories import HasNameFactory, HasDescriptionFactory
+from building_blocks.factories import HasNameFactory, HasDescriptionFactory
 from django.contrib.auth import get_user_model
 from django.db import models
 from rules.contrib.models import RulesModel

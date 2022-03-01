@@ -19,7 +19,7 @@ class AbstractProfileFactory(AbstractModelFactory):
                 abstract = True
 
             def __str__(self):
-                return f"{self.user}'s {self._meta.verbose_name}"
+                return f"{self.user} as {self._meta.verbose_name}"
 
             def deactivate(self):
                 return self.archive()

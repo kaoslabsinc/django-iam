@@ -1,5 +1,9 @@
 from rest_framework import serializers
 
+__all__ = [
+    'CurrentProfileDefault',
+]
+
 
 class CurrentProfileDefault(serializers.CurrentUserDefault):
     def __init__(self, profile_cls, create=False):

@@ -25,10 +25,18 @@ class BaseIAMUserAdmin(DjangoUserAdmin):
     readonly_fields = ('date_joined', 'last_login',)
 
     add_fieldsets = (
-        *DjangoUserAdmin.add_fieldsets,
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2'),
+        }),
         (_('Permissions'), {
+            'classes': ('wide',),
             'fields': ('is_staff',),
-        })
+        }),
+        (_('Personal info'), {
+            'classes': ('wide',),
+            'fields': ('first_name', 'last_name',),
+        }),
     )
 
 

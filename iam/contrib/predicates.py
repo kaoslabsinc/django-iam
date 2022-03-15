@@ -2,6 +2,8 @@ import rules
 
 from iam.registry import get_registered_roles
 
+p_system = rules.always_deny
+
 
 def is_any_helper(check_role_conf):
     passing_roles = get_registered_roles(check_role_conf)

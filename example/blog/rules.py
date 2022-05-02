@@ -1,14 +1,14 @@
 import rules
 
-from iam.roles import Role
+from iam.utils import lazy_get_predicate
 
 rules.add_perm('blog', rules.is_staff)
 
-
-class Roles:
-    blog_manager = Role('blog.BlogManager')
-    blog_author = Role('blog.BlogAuthor')
+is_blog_admin = lazy_get_predicate('blog.BlogAdminProfile')
+is_blog_author = lazy_get_predicate('blog.BlogAuthorProfile')
 
 
-is_blog_manager = Roles.blog_manager.predicate
-is_blog_author = Roles.blog_author.predicate
+@rules.predicate
+def is_privileged_blog_author(user):
+    from .models import BlogAuthorProfile
+    return BlogAuthorProfile.check_user(lambda profile: profile.is_privileged)(user)

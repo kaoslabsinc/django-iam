@@ -1,46 +1,42 @@
-import rules
-from django.db import models
+from building_blocks.factories import HasNameFactory
+from django.contrib.auth import get_user_model
 from rules.contrib.models import RulesModel
 
-from iam.factories import AbstractProfileFactory
-from simple.rules import is_simple_manager
+from iam import register_role
+from iam.contrib.utils import get_profile_cls_verbose_name_plural
+from iam.factories import AbstractProfileFactory, HasOwnerFactory
+from simple.rules import is_simple_admin
+from users.models import AppAdminProfile
+
+User = get_user_model()
 
 
-class SimpleManager(
-    AbstractProfileFactory.as_abstract_model(related_name='simple_manager_profile'),
+@register_role(admin=True)
+class SimpleAdminProfile(
+    AbstractProfileFactory.as_abstract_model('simple_admin_profile'),
+    RulesModel
+):
+    parent = AppAdminProfile
+
+    class Meta:
+        verbose_name_plural = get_profile_cls_verbose_name_plural('SimpleAdminProfile')
+        rules_permissions = {
+            'add': is_simple_admin,
+            'view': is_simple_admin,
+            'change': is_simple_admin,
+            'delete': is_simple_admin,
+        }
+
+
+class SimpleObject(
+    HasNameFactory.as_abstract_model(),
+    HasOwnerFactory.as_abstract_model(SimpleAdminProfile, related_name='simple_objects'),
     RulesModel
 ):
     class Meta:
         rules_permissions = {
-            'add': rules.is_superuser,
-            'view': rules.is_superuser | is_simple_manager,
-            'change': rules.is_superuser,
-            'delete': rules.is_superuser,
-        }
-
-
-class SimpleModel(
-    RulesModel
-):
-    name = models.CharField(max_length=100)
-
-    class Meta:
-        rules_permissions = {
-            'add': is_simple_manager,
-            'view': is_simple_manager,
-            'change': is_simple_manager,
-            'delete': is_simple_manager,
-        }
-
-
-class SimpleProxy(
-    SimpleModel
-):
-    class Meta:
-        proxy = True
-        rules_permissions = {
-            'add': rules.is_superuser,
-            'view': rules.is_superuser,
-            'change': rules.is_superuser,
-            'delete': rules.is_superuser,
+            'add': is_simple_admin,
+            'view': is_simple_admin,
+            'change': is_simple_admin,
+            'delete': is_simple_admin,
         }

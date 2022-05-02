@@ -1,40 +1,31 @@
-from building_blocks.admin.blocks import HasNameAdminBlock, HasDescriptionAdminBlock
-from building_blocks.admin.mixins import EditReadonlyAdminMixin
+from building_blocks.admin import HasNameAdmin, HasDescriptionAdmin
 from django.contrib import admin
-from rules.contrib.admin import ObjectPermissionsModelAdminMixin
 
-from iam.admin.admin import ObjectPermissionsProfileAdmin
-from iam.admin.blocks import HasOwnerAdminBlock
-from .models import BlogManager, BlogAuthor, BlogPost
+from iam.contrib.admin import AutoOwnerAdminMixin, HasOwnerAdmin, ObjectPermissionsProfileAdmin
+from .models import BlogAdminProfile, BlogAuthorProfile, BlogPost
 
-admin.site.register(BlogManager, ObjectPermissionsProfileAdmin)
-admin.site.register(BlogAuthor, ObjectPermissionsProfileAdmin)
+admin.site.register(BlogAdminProfile, ObjectPermissionsProfileAdmin)
+admin.site.register(BlogAuthorProfile, ObjectPermissionsProfileAdmin)
 
 
 @admin.register(BlogPost)
 class BlogPostAdmin(
-    EditReadonlyAdminMixin,
-    ObjectPermissionsModelAdminMixin,
+    HasOwnerAdmin,
+    AutoOwnerAdminMixin,
     admin.ModelAdmin
 ):
     search_fields = (
-        *HasNameAdminBlock.search_fields,
-        *HasOwnerAdminBlock.search_fields,
+        *HasNameAdmin.search_fields,
+        *HasOwnerAdmin.search_fields
     )
     list_display = (
-        *HasNameAdminBlock.list_display,
-        *HasOwnerAdminBlock.list_display,
+        *HasNameAdmin.list_display,
+        *HasOwnerAdmin.list_display
     )
-    edit_readonly_fields = (
-        *HasOwnerAdminBlock.edit_readonly_fields,
-    )
-    autocomplete_fields = (
-        *HasOwnerAdminBlock.autocomplete_fields,
-    )
-    fieldsets = (
-        (None, {'fields': (
-            *HasNameAdminBlock.fields,
-            *HasDescriptionAdminBlock.fields,
-            *HasOwnerAdminBlock.fields,
-        )}),
+    autocomplete_fields = HasOwnerAdmin.autocomplete_fields
+    edit_readonly_fields = HasOwnerAdmin.edit_readonly_fields
+    fields = (
+        *HasNameAdmin.fields,
+        *HasOwnerAdmin.fields,
+        *HasDescriptionAdmin.fields,
     )

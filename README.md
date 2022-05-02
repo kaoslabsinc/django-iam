@@ -14,19 +14,15 @@ Make sure you have a custom user model setup and in `settings.py` you have
 AUTH_USER_MODEL = 'users.User'  # Point to your custom user model
 ```
 
-Add the following to `INSTALLED_APPS` and `AUTHENTICATION_BACKENDS` settings
-(refer to [django-rules docs](https://github.com/dfunckt/django-rules#readme))
+Add `iam` to your `INSTALLED_APPS`
 
 ```python
 # settings.py
 INSTALLED_APPS = [
     'django.contrib.admin',
     ...,  # django apps
-
-    'rules.apps.AutodiscoverRulesConfig',  # <-- add this after django apps, but before your own apps
-
-    'users',
-    ...
+    'iam',
+    ...,  # Your apps
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -43,14 +39,18 @@ Create a profile for the role, e.g.
 # app/models.py
 from django.db import models
 from iam.factories import AbstractProfileFactory
+from iam.contrib.utils import get_profile_cls_verbose_name_plural
 
 
-class SimpleManager(
-    AbstractProfileFactory.as_abstract_model(related_name='simple_manager_profile'),
+class SomeRoleProfile(
+    AbstractProfileFactory.as_abstract_model(related_name='blog_author_profile'),
     models.Model
 ):
     # user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)  # comes from AbstractProfileFactory
-    pass
+
+    class Meta:
+        # Adds a little 👤 emoji to the name in admin, to make it clear this is a profile model
+        verbose_name_plural = get_profile_cls_verbose_name_plural('BlogAdminProfile')
 ```
 
 In your app, create a `rules.py`:
@@ -58,19 +58,12 @@ In your app, create a `rules.py`:
 ```python
 # app/rules.py
 import rules
-
-from iam.roles import Role
+from iam.utils import lazy_get_predicate
 
 # refer to https://github.com/dfunckt/django-rules#permissions-in-the-admin for why this is here
-rules.add_perm('app', rules.is_staff)
+rules.add_perm('some_app', rules.is_staff)
 
-
-# django-iam code
-class Roles:
-    simple_manager = Role('simple.SimpleManager')
-
-
-is_simple_manager = Roles.simple_manager.predicate
+is_some_role = lazy_get_predicate('some_app.SomeRole')
 ```
 
 In your model that you are planning to set access to:
@@ -78,25 +71,24 @@ In your model that you are planning to set access to:
 ```python
 # app/models.py
 from rules.contrib.models import RulesModel
-from app.rules import is_simple_manager
+from some_app.rules import is_some_role
 
 
-class SimpleModel(
+class SomeModel(
     RulesModel
 ):
     name = models.CharField(max_length=100)
 
     class Meta:
         rules_permissions = {
-            'add': is_simple_manager,
-            'view': is_simple_manager,
-            'change': is_simple_manager,
-            'delete': is_simple_manager,
+            'add': is_some_role,
+            'view': is_some_role,
+            'change': is_some_role,
+            'delete': is_some_role,
         }
-
 ```
 
-As the last step, enable your user model to work with IAM and roles by having it inherit `RolesUserMixin`:
+As the last step, enable your user model to work with IAM and roles by having it inherit `IAMUserMixin`:
 
 ```python
 # users/models.py
@@ -111,7 +103,7 @@ class User(
     ...
 ```
 
-Now only users that have a `SimpleManager` profile can access `SimpleModel`.
+Now only users that have a `SomeRoleProfile` profile can access `SomeModel`.
 
 For more examples, check out `example/blog`.
 
@@ -136,205 +128,33 @@ example on how to set IAM up in your Django project.
 
 ## Main tools
 
-### Role (`iam.roles.Role`)
-
-The main use of `Role` is to generate a predicate that checks whether a user has a certain profile or not:
-
-```python
-import rules
-from rules.contrib.models import RulesModel
-from iam.roles import Role
-
-manager_role = Role('app.ManagerProfile')
-
-is_manager = manager_role.predicate
-
-# gives `change_model` permission to users who have an active ManagerProfile
-rules.add_perm('app.change_model', is_manager)
-
-
-# gives `add_somemodel` permission to users who have an active ManagerProfile
-class SomeModel(RulesModel):
-    class Meta:
-        rules_permissions = {
-            'add': is_manager
-        }
-
-
-def some_view(request, pk):
-    obj = get_object(pk)
-    # checks if request.user has an active ManagerProfile or not
-    if is_manager.check(request.user, obj):
-        ...
-    else:
-        ...
-```
+### registry
 
 ### AbstractProfileFactory (`iam.factories.AbstractProfileFactory`)
 
-An [AbstractModelFactory](https://github.com/kaoslabsinc/django-building-blocks#abstract-model-factories) to create
-profiles. When you want to create a profile model, simply inherit from `AbstractProfileFactory.as_abstract_model()`. It
-will create a one to one field to the User model on your profile model. You can also set options
-on `.as_abstract_model()` such as:
-
-```python
-from iam.factories import AbstractProfileFactory
-
-AbstractProfileFactory.as_abstract_model(related_name='manager_profile')
-AbstractProfileFactory.as_abstract_model(user_optional=True)
-```
-
-`user_optional=True` makes the user field optional (`null=True, blank=True`). Useful to create profiles that may not be
-associated with a user account (e.g. a blog author that doesn't have an account on the system, and another user posts on
-their behalf).
-
-## Utilities
+### `lazy_get_predicate`
 
 ### Deactivating profiles
 
-In order to delete/deactivate a role, just like the Django user model, do not delete the instance. Instead, you can
-deactivate their profile by calling `instance.archive()`. Objects can be associated with Profile models, and you don't
-want to delete them, lest your database state loses integrity (and Django's deletion protection). You can also
-deactivate a profile using the admin interface documented in the following [section](#profileadmin).
-
-```python
-instance: ManagerProfile
-instance.deactivate().save()  # To deactivate their profile and suspend their role
-instance.restore().save()  # To activate their profile and restore their role
-```
-
-### `ProfileAdmin`
-
-For the best experience in the admin interface with profile models, have your profile admins inherit
-form `iam.admin.admin.ProfileAdmin`. This enables autocomplete on the user field, and also allows you to activate and
-deactivate profiles with a click. In order to use `ProfileAdmin`, add `django_object_actions` to your `INSTALLED_APPS`.
-`django-object-actions` (already installed as a dependency) allows object level actions in the admin interface.
-
-```python
-# settings.py
-INSTALLED_APPS = [
-    ...,
-    'django_object_actions',
-    ...
-]
-
-# admin.py
-from iam.admin.admin import ProfileAdmin
-
-
-@admin.register(ManagerProfile)
-class ManagerProfileAdmin(ProfileAdmin):
-    ...
-```
+### predicates
 
 ### `HasOwnerFactory`
 
-A common design pattern is to associate instances of objects with a user. For example, a blog post might have an author
-which can also give them extra permissions to that blog post since they are the author/owner of that object. Using IAM,
-instead of associating the object with the user model directly, you associate the object with the profile. In the blog
-post example, the `BlogPost` model would have a foreign key to the `BlogAuthor` model.
-
-IAM comes with an abstract model factory `iam.factories.HasOwnerFactory` to facilitate this design pattern. In the blog
-post example:
-
-```python
-from iam.factories import HasOwnerFactory
-
-
-class BlogPost(
-    HasOwnerFactory.as_abstract_model(BlogAuthor),
-    models.Model
-):
-    ...
-```
-
-Now your `BlogPost` model has a foreign key to `BlogAuthor`.
-
 ### Override permissions
-
-This utility is useful when you install an app that has access permissions set up using `iam` and you are looking to
-override its settings.
-
-Say you want to `outside_app.GoodModel` permissions to be readable by the `fancy_manager` role. The `fancy_manager` role
-is defined in the `fancy` app:
-
-```python
-# settings.py 
-INSTALLED_APPS = [
-    ...,
-    'outside_app',
-    ...,
-    'fancy',  # needs to be installed after `outside_app`
-]
-
-# fancy/rules.py
-from iam.utils import override_perms
-from iam.roles import Role
-from outside_app.models import GoodModel
-
-
-class Roles:
-    fancy_manager = Role('fancy.FancyManager')
-
-
-is_fancy_manager = Roles.fancy_manager.predicate
-
-override_perms(GoodModel, {
-    'view': is_fancy_manager,  # adding view permission to fancy_managers
-})
-```
-
-For more examples, check out `example/simple2`.
-
-### Useful predicates
-
-`iam.predicates`
-
-IAM comes with a few commonly used predicates: `is_user` which is generally used to check if a profile belongs to a
-user, and `is_owner` which is used to check if an instance belongs to a profile or not.
-Check `example/sample/models.py:Post`
-for an example of how they are used:
-
-```python
-class Post(
-    HasOwnerFactory.as_abstract_model(AuthorProfile),
-    RulesModel
-):
-    class Meta:
-        rules_permissions = {
-            'add': is_author | is_manager,
-            'change': (is_author & is_owner) | is_manager,
-            'view': (is_author & is_owner) | is_manager,
-            'delete': (is_author & is_owner) | is_manager,
-        }
-```
-
-In this example, in order to access a `Post` instance, the user either needs to be a manager, or be the author (owner)
-of the post.
-
-There is a third predicate called `is_self` that is mainly used in the UserAdmin to limit access to user objects who
-aren't the logged-in user.
 
 ## Optional tools and utilities (`iam.contrib`)
 
+### `ProfileAdmin`
+
+### `AutoOwnerAdminMixin`
+
+### Admin roles
+
 ### `AbstractIAMUser`
-
-`iam.contrib.users.models.AbstractIAMUser`
-
-`django-iam` comes with two abstract user models to assist in your development. `AbstractBaseIAMUser` implements the
-methods required to enable role-based permissions on the user and is the equivalent to django's `AbstractBaseUser`.
-`AbstractIAMUser` implements role-based permissions, `RulesModel` to enable rule based permission on the User model
-itself plus a number of properties such as `full_name`, `display_name`, and `initials`. Please refer to the code to see
-what each method does.
 
 ### `IAMUserAdmin`
 
-`iam.contrib.users.admin.IAMUserAdmin`
-
-`IAMUserAdmin` is an enhancement over Django's default `UserAdmin`. It enables users to create staff users right from
-the add user screen (important in certain workflows), hides superusers from non-superusers, and hides fields such as
-user permissions from non-superusers, as they are neither useful in the IAM permissions model, nor every staff user
-should have access to them.
+### `get_profile_class_verbose_name_plural`
 
 ## Development and Testing
 

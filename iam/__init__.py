@@ -1,4 +1,6 @@
-__version__ = '0.1.0'
+from .registry import register_role
+
+__version__ = '0.3.0-rc1'
 __version_info__ = tuple(
     [
         int(num) if num.isdigit() else num

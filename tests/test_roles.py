@@ -1,51 +1,27 @@
-from django.contrib.auth.models import AnonymousUser
-
-from simple.models import SimpleManager, SimpleModel, SimpleProxy
-from simple.rules import is_simple_manager
-
-
-def test_model_access(django_user_model):
-    user_has_access = django_user_model.objects.create(username='user_has_access')
-    user_has_no_access = django_user_model.objects.create(username='user_has_no_access')
-
-    SimpleManager.objects.create(user=user_has_access)
-
-    add_model_perm = SimpleModel.get_perm('add')
-    assert user_has_access.has_perm(add_model_perm)
-    assert not user_has_no_access.has_perm(add_model_perm)
+from blog.models import BlogAuthorProfile, BlogAdminProfile
+from simple.models import SimpleAdminProfile
+from users.models import AppAdminProfile
 
 
-def test_model_overridden_access(django_user_model):
-    user_has_access = django_user_model.objects.create(username='user_has_access')
-    user_has_no_access = django_user_model.objects.create(username='user_has_no_access')
+def test_load_roles(django_user_model):
+    user = django_user_model.objects.create()
+    app_admin_profile = AppAdminProfile.objects.create(user=user)
+    blog_author_profile = BlogAuthorProfile.objects.create(user=user)
 
-    SimpleManager.objects.create(user=user_has_access)
+    user.load_roles()
+    assert user.roles == {
+        AppAdminProfile: app_admin_profile,
+        BlogAdminProfile: False,
+        SimpleAdminProfile: False,
+        BlogAuthorProfile: blog_author_profile,
+    }
 
-    add_model_perm = SimpleProxy.get_perm('add')
-    assert not user_has_access.has_perm(add_model_perm)
-    assert not user_has_no_access.has_perm(add_model_perm)
-
-    view_model_perm = SimpleProxy.get_perm('view')
-    assert user_has_access.has_perm(view_model_perm)
-    assert not user_has_no_access.has_perm(view_model_perm)
-
-
-def test_model_access_archived_profile(django_user_model):
-    username = 'user'
-    user = django_user_model.objects.create(username=username)
-    profile = SimpleManager.objects.create(user=user)
-    add_model_perm = SimpleModel.get_perm('add')
-    assert user.has_perm(add_model_perm)
-
-    profile.deactivate().save()
-    user = django_user_model.objects.get(username=username)  # to reset _roles_cache
-    assert not user.has_perm(add_model_perm)
-
-    profile.restore().save()
-    user = django_user_model.objects.get(username=username)
-    assert user.has_perm(add_model_perm)
-
-
-def test_anon_user(django_user_model):
-    user = AnonymousUser()
-    assert not is_simple_manager(user)
+    blog_author_profile.archive()
+    blog_author_profile.save()
+    user.load_roles()
+    assert user.roles == {
+        AppAdminProfile: app_admin_profile,
+        BlogAdminProfile: False,
+        SimpleAdminProfile: False,
+        BlogAuthorProfile: False,
+    }

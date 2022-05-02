@@ -1,32 +1,30 @@
+from iam.registry import get_registered_roles
+
+
 class IAMUserMixin:
-    def has_role(self, role, *args):
-        if not self.is_authenticated:
-            return False
+    def __init__(self, *args, **kwargs):
+        self._roles = {}  # { ProfileModel: instance | False }
+        super(IAMUserMixin, self).__init__(*args, **kwargs)
 
-        self.__dict__.setdefault('_roles_cache', {})
-        roles_cache = self.__dict__['_roles_cache']
-        cache_key = (role, *args)
+    @property
+    def roles(self):
+        return self._roles
 
-        if roles_cache.get(cache_key) is None:
-            profile_model = role.profile_model
-            try:
-                profile = self._get_profile_instance(profile_model)
-            except profile_model.DoesNotExist:
-                self._role_profile_doesnt_exist(role, *args)
-            else:
-                self._role_profile_exists(profile, role, *args)
+    def set_role(self, model_cls):
+        try:
+            profile_instance = model_cls.objects.active().get(user=self)
+        except model_cls.DoesNotExist:
+            profile_instance = False
+        self._roles[model_cls] = profile_instance
+        return profile_instance
 
-        return roles_cache[cache_key]
+    def get_or_set_role(self, model_cls):
+        profile_instance = self.roles.get(model_cls)  # None | False | instance
+        if profile_instance is None:
+            profile_instance = self.set_role(model_cls)
+        return profile_instance
 
-    def _get_profile_instance(self, profile_model):
-        return profile_model.objects.active().get(user=self)
-
-    def _role_profile_exists(self, profile, role, *args):
-        roles_cache = self.__dict__['_roles_cache']
-        cache_key = (role, *args)
-        roles_cache[cache_key] = True
-
-    def _role_profile_doesnt_exist(self, role, *args):
-        roles_cache = self.__dict__['_roles_cache']
-        cache_key = (role, *args)
-        roles_cache[cache_key] = False
+    def load_roles(self):
+        self._roles = {}
+        for model_cls in get_registered_roles():
+            self.set_role(model_cls)

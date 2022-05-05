@@ -13,6 +13,9 @@ class RolePredicateMixin(models.Model):
     @classmethod
     def get_predicate(cls, extra_check=DEFAULT_EXTRA_CHECK):
         def has_role(user):
+            if user.is_superuser:
+                return True
+
             profile_instance = user.get_or_set_role(cls._meta.model)
             return bool(profile_instance) and extra_check(profile_instance)
 

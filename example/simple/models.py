@@ -3,9 +3,11 @@ from rules.contrib.models import RulesModel
 
 from iam.models import UserProfileModel
 from iam.predicates import is_owner
+from iam.registry import register_role
 from .rules import is_author
 
 
+@register_role
 class AuthorProfile(UserProfileModel):
     pass
 

@@ -17,7 +17,7 @@ def create_user(django_user_model):
 
 @pytest.fixture
 def create_profile():
-    def _create_profile(profile_model, user):
-        return profile_model.objects.create(user=user)
+    def _create_profile(profile_model, user, **kwargs):
+        return profile_model.objects.create(user=user, **kwargs)
 
     return _create_profile

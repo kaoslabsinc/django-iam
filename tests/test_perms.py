@@ -22,6 +22,12 @@ class TestBlogPostPerms:
         return user
 
     @pytest.fixture
+    def user_super_author(self, create_user, create_profile):
+        user = create_user('user_super_author')
+        create_profile(AuthorProfile, user, is_super_author=True)
+        return user
+
+    @pytest.fixture
     def user_superuser(self, create_user):
         return create_user('user_superuser', is_superuser=True)
 
@@ -43,11 +49,19 @@ class TestBlogPostPerms:
             'add': (True, None),
             'view': (True, True),
             'change': (True, False),
-            'delete': (True, False),
+            'delete': (False, False),
         })
 
     def test_user_author_owner(self, user_author_owner, obj):
         assert_has_perm_bulk(BlogPost, user_author_owner, obj, {
+            'add': (True, None),
+            'view': (True, True),
+            'change': (True, True),
+            'delete': (False, False),
+        })
+
+    def test_user_super_author(self, user_super_author, obj):
+        assert_has_perm_bulk(BlogPost, user_super_author, obj, {
             'add': (True, None),
             'view': (True, True),
             'change': (True, True),

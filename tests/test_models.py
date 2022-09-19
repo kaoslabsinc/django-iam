@@ -1,0 +1,7 @@
+from simple.models import AuthorProfile
+
+
+def test_UserProfileModel(django_user_model):
+    user = django_user_model.objects.create()
+    profile = AuthorProfile.objects.create(user=user)
+    assert profile.user == user

@@ -55,7 +55,7 @@ class IAMUserMixin:
     def roles(self):
         return self._roles
 
-    def _set_role(self, model_cls) -> Any | False:
+    def _set_role(self, model_cls) -> Any | bool:
         """
         Check if this user has a particular profile denoted by `model_cls`. If they do cache the profile instance. If
         not cache a False value, so we don't need to hit the database again for this check.

@@ -64,7 +64,7 @@ class IAMUserMixin:
         :return: The profile instance belonging to the user or False
         """
         try:
-            profile_instance = model_cls.objects.active().get(user=self)
+            profile_instance = model_cls.objects.available().get(user=self)
         except model_cls.DoesNotExist:
             profile_instance = False
         self._roles[model_cls] = profile_instance

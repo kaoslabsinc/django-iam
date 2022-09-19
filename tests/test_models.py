@@ -1,4 +1,4 @@
-from iam.registry import registry, get_registered_roles
+from iam.registry import get_registered_roles
 from simple.models import AuthorProfile
 
 

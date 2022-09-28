@@ -3,6 +3,11 @@ from django.contrib import admin
 
 
 class HasOwnerAdmin(EditReadonlyAdminMixin, admin.ModelAdmin):
+    """
+    Admin class for models that have an owner relational field to a profile model.
+    Use as a base for your admin classes or use its static fields (e.g. `search_fields` or `list_display`) for a
+    standardized admin interface for models with an owner.
+    """
     search_fields = ('owner__user__username',)
     list_display = ('owner_display',)
     autocomplete_fields = ('owner',)

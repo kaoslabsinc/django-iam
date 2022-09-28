@@ -4,6 +4,9 @@ from .predicates import p_system
 
 
 class Perms:
+    """
+    A utility class with common `rules_permissions` (from `rules.RulesModel` interface) values.
+    """
     all_is_staff = {
         'add': rules.is_staff,
         'change': rules.is_staff,

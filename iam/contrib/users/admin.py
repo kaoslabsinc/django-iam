@@ -9,6 +9,9 @@ class HideSuperuserUserAdminMixin(
     ExcludeFromFieldsetsMixin,
     BaseModelAdmin
 ):
+    """
+    Hide certain sensitive fields (e.g. `is_superuser`, `user_permissions`) from non-superusers.
+    """
     exclude_from_non_superusers = ('is_superuser', 'user_permissions')
 
     def get_queryset(self, request):
@@ -19,6 +22,9 @@ class HideSuperuserUserAdminMixin(
 
 
 class BaseIAMUserAdmin(DjangoUserAdmin):
+    """
+    Base admin class for inheritors of `AbstractIAMUser`.
+    """
     list_display = ('username', 'email', 'full_name', 'is_active', 'is_staff')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     list_filter = ('is_staff', 'is_active', 'groups')
@@ -41,7 +47,9 @@ class BaseIAMUserAdmin(DjangoUserAdmin):
 
 
 class IAMUserAdmin(HideSuperuserUserAdminMixin, BaseIAMUserAdmin):
-    pass
+    """
+    Admin class for custom user models that inherit from `AbstractIAMUser`
+    """
 
 
 __all__ = [

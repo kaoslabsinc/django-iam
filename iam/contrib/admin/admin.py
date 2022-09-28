@@ -4,11 +4,14 @@ from django.contrib import admin
 from rules.contrib.admin import ObjectPermissionsModelAdminMixin
 
 
-class ProfileAdmin(
+class BaseProfileAdmin(
     ArchivableAdmin,
     EditReadonlyAdminMixin,
     admin.ModelAdmin
 ):
+    """
+    Base admin class for profile models.
+    """
     USER = 'user'
 
     search_fields = ('user__username',)
@@ -28,16 +31,20 @@ class ProfileAdmin(
     )
 
     @admin.action(permissions=['change'], description="Deactivate")
-    def archive(self, request, queryset):
-        return super(ProfileAdmin, self).archive(request, queryset)
+    def archive(self, request, queryset):  # Overridden here to change the label (^ description="Deactivate")
+        return super(BaseProfileAdmin, self).archive(request, queryset)
 
     archive.label = "Deactivate"
 
 
-class ObjectPermissionsProfileAdmin(
+class ProfileAdmin(
     ObjectPermissionsModelAdminMixin,
-    ProfileAdmin
+    BaseProfileAdmin
 ):
+    """
+    Admin class for profile models that comes with `ObjectPermissionsModelAdminMixin`. In most cases you should use
+    this class over `BaseProfileAdmin`.
+    """
     pass
 
 
@@ -54,7 +61,7 @@ class HasOwnerAdmin(EditReadonlyAdminMixin, admin.ModelAdmin):
 
 
 __all__ = [
+    'BaseProfileAdmin',
     'ProfileAdmin',
-    'ObjectPermissionsProfileAdmin',
     'HasOwnerAdmin',
 ]

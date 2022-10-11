@@ -1,5 +1,5 @@
 Welcome to Django Identity and Access Management's documentation!
-=============================================
+=================================================================
 
 Roles and access management for django apps
 

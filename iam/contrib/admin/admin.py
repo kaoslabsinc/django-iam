@@ -17,7 +17,7 @@ class BaseProfileAdmin(
     search_fields = ('user__username',)
     list_display = (
         USER,
-        ArchivableAdmin.list_display,
+        *ArchivableAdmin.list_display,
     )
     list_filter = ArchivableAdmin.list_filter
 

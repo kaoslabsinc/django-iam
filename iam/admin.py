@@ -48,7 +48,7 @@ class ProfileAdmin(
     pass
 
 
-__all__ = [
+__all__ = (
     'BaseProfileAdmin',
     'ProfileAdmin',
-]
+)

@@ -1,3 +1,4 @@
+from building_blocks.consts.field_names import OWNER
 from django.contrib import admin
 
 
@@ -6,7 +7,7 @@ class AutoOwnerAdminMixin(admin.ModelAdmin):
     Admin mixin that autofills an owner field (denoted by `owner_field`, default ``owner``) with the appropriate profile
     of the user who is logged in.
     """
-    owner_field = 'owner'
+    owner_field = OWNER
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         field = super().formfield_for_foreignkey(db_field, request, **kwargs)

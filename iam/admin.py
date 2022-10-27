@@ -1,4 +1,4 @@
-from building_blocks.admin import BaseArchivableAdminMixin, ArchivableAdminBlock, ArchivableAdminMixin
+from building_blocks.admin import BaseArchivableMixinAdmin, ArchivableAdminBlock, ArchivableMixinAdmin
 from building_blocks.consts.field_names import *
 from dj_kaos_utils.admin import EditReadonlyAdminMixin
 from django.contrib import admin
@@ -18,7 +18,7 @@ class ProfileAdminBlock(ArchivableAdminBlock):
 
 
 class BaseProfileAdmin(
-    BaseArchivableAdminMixin,
+    BaseArchivableMixinAdmin,
     EditReadonlyAdminMixin,
     BaseModelAdmin
 ):
@@ -40,7 +40,7 @@ class BaseProfileInlineAdmin(
 
 
 class BaseProfileModelAdmin(
-    ArchivableAdminMixin,
+    ArchivableMixinAdmin,
     BaseProfileAdmin,
     admin.ModelAdmin
 ):

@@ -1,5 +1,5 @@
+from building_blocks.admin import BaseArchivableAdminMixin, ArchivableAdminBlock, ArchivableAdminMixin
 from building_blocks.consts.field_names import *
-from building_blocks.models.admin import BaseArchivableAdminMixin, ArchivableAdminBlock, ArchivableAdminMixin
 from dj_kaos_utils.admin import EditReadonlyAdminMixin
 from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin, InlineModelAdmin

@@ -1,4 +1,4 @@
-from building_blocks.admin import ExcludeFromFieldsetsMixin, ExcludeFromNonSuperusersMixin
+from dj_kaos_utils.admin import ExcludeFromFieldsetsMixin, ExcludeFromNonSuperusersMixin
 from django.contrib.admin.options import BaseModelAdmin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _

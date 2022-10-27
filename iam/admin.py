@@ -7,14 +7,14 @@ from rules.contrib.admin import ObjectPermissionsModelAdminMixin
 
 
 class ProfileAdminBlock(ArchivableAdminBlock):
-    edit_readonly_fields = (USER,)
-    autocomplete_fields = (USER,)
-    the_fieldset = (None, {'fields': (USER,)})
+    base_fields = (USER,)
+    edit_readonly_fields = base_fields
+    autocomplete_fields = base_fields
     list_display = (
-        USER,
+        *base_fields,
         *ArchivableAdminBlock.list_display,
     )
-    search_fields = ('user__username',)
+    search_fields = (f'{USER}__username',)
 
 
 class BaseProfileAdmin(

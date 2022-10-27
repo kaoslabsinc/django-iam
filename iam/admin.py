@@ -1,4 +1,5 @@
-from building_blocks.admin import BaseArchivableMixinAdmin, ArchivableAdminBlock, ArchivableMixinAdmin
+from building_blocks.admin import BaseArchivableMixinAdmin, ArchivableMixinAdmin, \
+    ArchivableUnnamedKaosModelAdminBlock
 from building_blocks.consts.field_names import *
 from dj_kaos_utils.admin import EditReadonlyAdminMixin
 from django.contrib import admin
@@ -6,13 +7,13 @@ from django.contrib.admin.options import BaseModelAdmin, InlineModelAdmin
 from rules.contrib.admin import ObjectPermissionsModelAdminMixin
 
 
-class ProfileAdminBlock(ArchivableAdminBlock):
+class ProfileAdminBlock(ArchivableUnnamedKaosModelAdminBlock):
     base_fields = (USER,)
     edit_readonly_fields = base_fields
     autocomplete_fields = base_fields
     list_display = (
         *base_fields,
-        *ArchivableAdminBlock.list_display,
+        *ArchivableUnnamedKaosModelAdminBlock.list_display,
     )
     search_fields = (f'{USER}__username',)
 

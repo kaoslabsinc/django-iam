@@ -1,24 +1,33 @@
-from building_blocks.admin import ArchivableAdmin, BaseArchivableAdmin
+from building_blocks.consts.field_names import *
+from building_blocks.models.admin import BaseArchivableAdminMixin, ArchivableAdminBlock, ArchivableAdminMixin
 from dj_kaos_utils.admin import EditReadonlyAdminMixin
 from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin, InlineModelAdmin
 from rules.contrib.admin import ObjectPermissionsModelAdminMixin
 
-USER = 'user'
+
+class ProfileAdminBlock(ArchivableAdminBlock):
+    edit_readonly_fields = (USER,)
+    autocomplete_fields = (USER,)
+    the_fieldset = (None, {'fields': (USER,)})
+    list_display = (
+        USER,
+        *ArchivableAdminBlock.list_display,
+    )
+    search_fields = ('user__username',)
 
 
 class BaseProfileAdmin(
-    BaseArchivableAdmin,
+    BaseArchivableAdminMixin,
     EditReadonlyAdminMixin,
     BaseModelAdmin
 ):
-    readonly_fields = ArchivableAdmin.readonly_fields
-    edit_readonly_fields = (USER,)
-    autocomplete_fields = (USER,)
-    fields = None
+    readonly_fields = ProfileAdminBlock.readonly_fields
+    edit_readonly_fields = ProfileAdminBlock.edit_readonly_fields
+    autocomplete_fields = ProfileAdminBlock.autocomplete_fields
     fieldsets = (
-        (None, {'fields': (USER,)}),
-        *ArchivableAdmin.fieldsets,
+        ProfileAdminBlock.the_fieldset,
+        ProfileAdminBlock.the_admin_fieldset,
     )
 
 
@@ -31,19 +40,16 @@ class BaseProfileInlineAdmin(
 
 
 class BaseProfileModelAdmin(
-    ArchivableAdmin,
+    ArchivableAdminMixin,
     BaseProfileAdmin,
     admin.ModelAdmin
 ):
     """
     Base admin class for profile models.
     """
-    search_fields = ('user__username',)
-    list_display = (
-        USER,
-        *ArchivableAdmin.list_display,
-    )
-    list_filter = ArchivableAdmin.list_filter
+    search_fields = ProfileAdminBlock.search_fields
+    list_display = ProfileAdminBlock.list_display
+    list_filter = ProfileAdminBlock.list_filter
 
     @admin.action(permissions=['change'], description="Deactivate")
     def archive(self, request, queryset):  # Overridden here to change the label (^ description="Deactivate")
@@ -64,6 +70,7 @@ class ProfileAdmin(
 
 
 __all__ = (
+    'ProfileAdminBlock',
     'BaseProfileInlineAdmin',
     'BaseProfileModelAdmin',
     'ProfileAdmin',

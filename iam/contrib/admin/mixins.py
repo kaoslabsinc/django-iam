@@ -1,3 +1,4 @@
+import rules
 from building_blocks.consts.field_names import OWNER
 from django.contrib.admin.options import BaseModelAdmin
 
@@ -20,6 +21,19 @@ class AutoOwnerAdminMixin(BaseModelAdmin):
         return field
 
 
+class FieldsetPermissionsMixin(BaseModelAdmin):
+    def get_fieldsets(self, request, obj=None):
+        og_fieldsets = super().get_fieldsets(request, obj)
+        fieldsets = []
+        for fieldset in og_fieldsets:
+            perms = fieldset[1].pop('perms', rules.always_allow)
+            if perms.test(request.user, obj):
+                fieldsets.append(fieldset)
+
+        return fieldsets
+
+
 __all__ = [
     'AutoOwnerAdminMixin',
+    'FieldsetPermissionsMixin',
 ]

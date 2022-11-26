@@ -1,8 +1,8 @@
 from building_blocks.consts.field_names import OWNER
-from django.contrib import admin
+from django.contrib.admin.options import BaseModelAdmin
 
 
-class AutoOwnerAdminMixin(admin.ModelAdmin):
+class AutoOwnerAdminMixin(BaseModelAdmin):
     """
     Admin mixin that autofills an owner field (denoted by `owner_field`, default ``owner``) with the appropriate profile
     of the user who is logged in.

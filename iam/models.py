@@ -1,6 +1,6 @@
 from typing import Callable, Any
 
-from building_blocks.models import Archivable
+from building_blocks.models import Archivable, UnnamedKaosModel
 from django.conf import settings
 from django.db import models
 
@@ -10,6 +10,7 @@ from .mixins import RolePredicateMixin
 class UserProfileModel(
     RolePredicateMixin,
     Archivable,
+    UnnamedKaosModel,
     models.Model
 ):
     """

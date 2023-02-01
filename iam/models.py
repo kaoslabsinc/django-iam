@@ -1,4 +1,5 @@
 from typing import Callable, Any
+from warnings import warn
 
 from building_blocks.models import Archivable, UnnamedKaosModel
 from django.conf import settings
@@ -39,6 +40,8 @@ class UserProfileModel(
         :return: Function that accepts a user instance as an argument, and checks if they have the role and some extra
             conditions.
         """
+
+        warn('This method is deprecated.', DeprecationWarning)
 
         def check_user_func(user) -> bool:
             profile = user.get_or_set_role(cls)

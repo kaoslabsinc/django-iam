@@ -10,6 +10,9 @@ def override_perms(cls, new_rules: dict):
     Override `rules_permissions` for the class with new rules.
     :param cls: The model class where we want to override permissions.
     :param new_rules: The new set of rules.
+
+    Example:
+        >>> override_perms(SomeModel, {'add': is_owner})
     """
     for perm, rule in new_rules.items():
         rules.set_perm(cls.get_perm(perm), rule)
@@ -27,6 +30,10 @@ def lazy_get_predicate(model_path, extra_check=None):
     :param model_path: dot path to the model, used to lazily load the model, without referencing it directly.
     :param extra_check: Extra check on the profile instance.
     :return: Predicate
+
+    Example:
+        >>> is_author = lazy_get_predicate('simple.AuthorProfile')
+        >>> is_super_author = lazy_get_predicate('simple.AuthorProfile', lambda p: p.is_super_author)
     """
 
     def check(*args, **kwargs):

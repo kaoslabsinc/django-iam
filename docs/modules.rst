@@ -45,3 +45,17 @@ Mixins
 
 .. autoclass:: IAMUserMixin
     :members:
+
+
+Predicates
+===========
+.. automodule:: iam.predicates
+
+.. autofunction:: is_owner
+.. autofunction:: is_user
+
+
+Utils
+===========
+.. automodule:: iam.utils
+    :members:

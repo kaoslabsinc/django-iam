@@ -3,9 +3,10 @@ Modules
 
 .. contents::
     :depth: 2
+    :local:
 
 
-models
+Models
 ======
 .. automodule:: iam.models
 

@@ -5,6 +5,8 @@ from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin
 
 
+# TODO: deprecate .author in favor of sole .owner
+
 def _get_owner_cls_name_fragment(owner_field):
     return owner_field.replace('_', ' ').title().replace(' ', '')
 
@@ -28,7 +30,9 @@ def has_owner_admin_block_factory(owner_field=OWNER):
 
 
 HasOwnerAdminBlock = has_owner_admin_block_factory()
+"""Admin block for models with an owner linked to a profile"""
 HasAuthorAdminBlock = has_owner_admin_block_factory(AUTHOR)
+"""Admin block for models with an author linked to a profile"""
 
 
 def base_has_owner_admin_mixin_factory(admin_block_cls=HasOwnerAdminBlock):

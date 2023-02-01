@@ -3,7 +3,7 @@
 Roles and access management for django apps
 
 ```bash
-pip install django-building-blocks
+pip install django-iam
 ```
 
 Documentation: https://django-iam.readthedocs.io/

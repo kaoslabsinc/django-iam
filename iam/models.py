@@ -61,6 +61,16 @@ class UserProfileModel(
 
         return check_user_func
 
+    @classmethod
+    def get_for_user(cls, user) -> Optional['UserProfileModel']:
+        """
+        Check if a user has a profile denoted by this class.
+
+        :param user: the user to check
+        :return: The profile instance belonging to the user or None
+        """
+        return user.get_or_set_role(cls)
+
 
 __all__ = [
     'UserProfileModel',

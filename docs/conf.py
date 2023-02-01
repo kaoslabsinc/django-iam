@@ -6,12 +6,17 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-import os
-
 import django
+from django.conf import settings, global_settings
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'example.settings')
-
+settings.configure(
+    INSTALLED_APPS=[
+        *global_settings.INSTALLED_APPS,
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+    ]
+)
 django.setup()
 
 project = 'Django Identity and Access Management'

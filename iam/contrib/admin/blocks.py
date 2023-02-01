@@ -15,16 +15,16 @@ def _get_owner_display_label(owner_field):
     return owner_field.replace('_', ' ')
 
 
-def has_owner_admin_block_factory(owner_field=OWNER):
+def has_owner_admin_block_factory(_owner_field=OWNER):
     class HasXXXAdminBlock(BaseAdminBlock):
-        owner_field = OWNER
+        owner_field = _owner_field
         search_fields = (f'{owner_field}__{USER}__username',)
         list_display = (f'{owner_field}_display',)
         autocomplete_fields = (owner_field,)
         edit_readonly_fields = (owner_field,)
         base_fields = (owner_field,)
 
-    owner_cls_name_fragment = _get_owner_cls_name_fragment(owner_field)
+    owner_cls_name_fragment = _get_owner_cls_name_fragment(_owner_field)
     HasXXXAdminBlock.__name__ = HasXXXAdminBlock.__name__.replace('XXX', owner_cls_name_fragment)
     return HasXXXAdminBlock
 

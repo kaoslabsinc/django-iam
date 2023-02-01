@@ -96,3 +96,4 @@ class IAMUserMixin:
         self._roles = {}
         for model_cls in get_registered_roles():
             self._set_role(model_cls)
+        return self._roles

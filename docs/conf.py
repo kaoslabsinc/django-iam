@@ -10,6 +10,7 @@ import django
 from django.conf import settings, global_settings
 
 settings.configure(
+    SECRET_KEY='1234',
     INSTALLED_APPS=[
         *global_settings.INSTALLED_APPS,
         'django.contrib.admin',

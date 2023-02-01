@@ -32,8 +32,8 @@ def lazy_get_predicate(model_path, extra_check=None):
     :return: Predicate
 
     Example:
-        >>> is_author = lazy_get_predicate('simple.AuthorProfile')
-        >>> is_super_author = lazy_get_predicate('simple.AuthorProfile', lambda p: p.is_super_author)
+        >>> is_author = lazy_get_predicate('blog.AuthorProfile')
+        >>> is_super_author = lazy_get_predicate('blog.AuthorProfile', lambda p: p.is_super_author)
     """
 
     def check(*args, **kwargs):

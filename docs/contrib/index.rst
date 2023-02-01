@@ -5,12 +5,18 @@ Contrib module
     :depth: 2
     :local:
 
-Nested Contents
-==================
+Users
+======
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     users
+
+Admin
+======
+.. toctree::
+    :maxdepth: 3
+
     admin
 
 Predicates

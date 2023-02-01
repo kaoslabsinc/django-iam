@@ -39,6 +39,16 @@ class UserProfileModel(
         :param check_func: Function that receives a profile instance and checks if it passes a condition or not.
         :return: Function that accepts a user instance as an argument, and checks if they have the role and some extra
             conditions.
+
+        Example:
+            >>> # models.py
+            >>> @register_role
+            >>> class AuthorProfile(UserProfileModel):
+            >>>     is_super_author = models.BooleanField(default=False)
+            >>>
+            >>>     @staticmethod
+            >>>     def check_super_author(user):
+            >>>         return AuthorProfile.check_user(lambda p: p.is_super_author)(user)
         """
 
         warn('This method is deprecated.', DeprecationWarning)

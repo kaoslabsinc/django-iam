@@ -13,6 +13,9 @@ def test_UserProfileModel(create_user):
     user2 = create_user()
     assert AuthorProfile.get_for_user(user2) is None
 
+    assert user.load_roles() == {AuthorProfile: profile}
+    assert user2.load_roles() == {AuthorProfile: False}
+
 
 def test_registry():
     registered_roles = get_registered_roles()

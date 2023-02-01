@@ -34,6 +34,7 @@ class UserProfileModel(
         """
         Return a function that first, checks if a user has the role denoted by this profile class, and then runs
         `check_func` on the user's profile for this role to determine extra permissions.
+
         :param check_func: Function that receives a profile instance and checks if it passes a condition or not.
         :return: Function that accepts a user instance as an argument, and checks if they have the role and some extra
             conditions.

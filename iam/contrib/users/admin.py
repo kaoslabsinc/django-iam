@@ -10,11 +10,17 @@ class HideSuperuserUserAdminMixin(
     BaseModelAdmin
 ):
     """
-    Hide certain sensitive fields (e.g. `is_superuser`, `user_permissions`) from non-superusers.
+    Hide sensitive data from non-superuser.
+
+    Includes:
+
+        - sensitive fields (e.g. `is_superuser`, `user_permissions`)
+        - sensitive users (i.e. superusers)
     """
     exclude_from_non_superusers = ('is_superuser', 'user_permissions')
 
     def get_queryset(self, request):
+        """"""
         queryset = super().get_queryset(request)
         if request.user.is_superuser:
             return queryset

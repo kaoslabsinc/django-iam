@@ -50,7 +50,7 @@ class AbstractIAMUser(
     def display_name(self):
         """
         :return: The best way to display this user's name in a UI. Default to their full name if it exists,
-        otherwise their username.
+            otherwise their username.
         """
         return self.full_name if self.full_name.strip() else self.username
 
@@ -58,7 +58,7 @@ class AbstractIAMUser(
     def display_id(self):
         """
         :return: The best string of characters to id this user on a UI. Defaults to ``instance.username``. Change
-        `.id_field` to use a different field for id (e.g. `email`).
+            `.id_field` to use a different field for id (e.g. `email`).
         """
         return getattr(self, self.id_field)
 

@@ -34,8 +34,8 @@ It also allows devs to create object level permissions, something which the buil
 django-iam builds on django-rules by introducing the concept of Roles and Profiles. In IAM each user is assigned one or
 many `roles`, which determine their access to certain objects or paths in the application. Each `Role` has an associated
 `Profile` which is a database model/object with a 1-1 relationship to the `User` model. A user has a Role if their User
-account has the associated profile in an active/available state. Please check the Get Started section for an example on
-how to set IAM up in your Django project.
+account has the associated profile in an active/available state. Please check the :doc:`tutorial` section
+for an example on how to set IAM up in your Django project.
 
 Indices and tables
 ==================

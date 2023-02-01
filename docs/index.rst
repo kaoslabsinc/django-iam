@@ -16,7 +16,7 @@ Roles and access management for django apps
     modules
     contrib/index
 
-.. contents::
+.. contents:: On this page
     :local:
     :depth: 2
 

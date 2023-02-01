@@ -1,10 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 
-from iam.mixins import IAMUserMixin
+from iam.contrib.users.models import AbstractIAMUser
 
 
 class User(
-    IAMUserMixin,
-    AbstractUser
+    AbstractIAMUser
 ):
     pass

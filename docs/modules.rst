@@ -34,3 +34,14 @@ Registry
     :param filter_func: Optionally pass in a function that takes a profile class as an argument, and returns True
         or False depending on whether the class should be included in the return value or not.
     :return: Set off all registered profile model classes, optionally filtered by `filter_func` logic.
+
+
+Mixins
+========
+.. automodule:: iam.mixins
+
+.. autoclass:: RolePredicateMixin
+    :members:
+
+.. autoclass:: IAMUserMixin
+    :members:

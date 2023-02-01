@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Optional
 
 import rules
 from django.db import models
@@ -12,6 +12,9 @@ class RolePredicateMixin(models.Model):
     has a profile or not.
     Provides `parent` attribute. If a role has a parent, and a user has the parent profile, the user will have all
     permissions associated with the child role too.
+
+    :param parent: A role could be a specific subset of another parent role. Set parent to that. If a user has a role
+        that is the child of another roles, they automatically get all the permissions for the parent role too.
     """
     parent: 'RolePredicateMixin' = None
 

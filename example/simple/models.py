@@ -1,4 +1,3 @@
-from django.contrib.auth.checks import check_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from rules.contrib.models import RulesModel

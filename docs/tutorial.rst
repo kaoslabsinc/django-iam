@@ -98,5 +98,5 @@ In the model that you are planning to set access to::
 
 Now only users that have a ``SomeRoleProfile`` profile can access ``SomeModel``.
 
-For more examples, check out `example/blog`.
+For more examples, check out `example/blog` or :doc:`advanced_tutorial`.
 

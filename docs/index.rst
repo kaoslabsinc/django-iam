@@ -12,6 +12,7 @@ Roles and access management for django apps
     :caption: Contents:
 
     tutorial
+    advanced_tutorial
     modules
     contrib/index
 

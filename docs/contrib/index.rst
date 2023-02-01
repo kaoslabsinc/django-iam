@@ -1,4 +1,7 @@
 Contrib module
 ==============
 
-* :doc:`contrib/admin`
+.. toctree::
+    :maxdepth: 2
+
+    admin

@@ -11,10 +11,12 @@ Install::
     pip install django-iam
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 2
+    :caption: Contents:
 
-   iam
+    tutorial
+    modules
+    contrib/index
 
 Indices and tables
 ==================

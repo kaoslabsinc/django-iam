@@ -1,4 +1,8 @@
-from typing import Callable, Any
+"""
+This module contains an abstract model `UserProfileModel` to be used as a mixin for any profile model class
+"""
+
+from typing import Callable, Any, Optional
 from warnings import warn
 
 from building_blocks.models import Archivable, UnnamedKaosModel
@@ -18,6 +22,8 @@ class UserProfileModel(
     Abstract model for profile models to inherit from. Provides a one-to-one user field that points to the owner of a
     profile.
     Override the user field, if you'd like to set its `related_name` or set it to optional (e.g. for bot profiles)
+
+    :param user: The user this profile belongs to
     """
 
     class Meta:

@@ -1,3 +1,10 @@
+"""
+Contains a class `RolesRegistry`, which serves as the central repository for all the roles in a particular app. This
+module also instantiates a registry, which is available through the variable `registry` (`iam.registry.registry`). Also
+exports functions `register_role` and `get_registered_roles`, which are the equivalent of `registry.register()` and
+`registry.get_registered_roles()`
+"""
+
 from typing import Callable, Any
 
 

@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Optional
 
 import rules
 from django.db import models
@@ -12,6 +12,9 @@ class RolePredicateMixin(models.Model):
     has a profile or not.
     Provides `parent` attribute. If a role has a parent, and a user has the parent profile, the user will have all
     permissions associated with the child role too.
+
+    :param parent: A role could be a specific subset of another parent role. Set parent to that. If a user has a role
+        that is the child of another roles, they automatically get all the permissions for the parent role too.
     """
     parent: 'RolePredicateMixin' = None
 
@@ -55,9 +58,9 @@ class IAMUserMixin:
     def roles(self):
         return self._roles
 
-    def _set_role(self, model_cls) -> Any | bool:
+    def _set_role(self, model_cls) -> Optional[RolePredicateMixin]:
         """
-        Check if this user has a particular profile denoted by `model_cls`. If they do cache the profile instance. If
+        Check if this user has a particular profile denoted by `model_cls`. If they do, cache the profile instance. If
         not cache a False value, so we don't need to hit the database again for this check.
 
         :param model_cls: The model class of the profile to be checked.
@@ -72,17 +75,19 @@ class IAMUserMixin:
 
     def get_or_set_role(self, model_cls):
         """
-        Check if this user has a particular profile denoted by `model_cls`. First hit the cache. If there is no value
-        in the cache, hit the database. If the user has the profile cache the profile instance. If
-        not cache a False value, so we don't need to hit the database again for this check.
+        Check if this user has a particular profile denoted by `model_cls`.
+
+        First hit the cache. If there is no value
+        in the cache, hit the database. If the user has the profile, cache the profile instance. If
+        not, cache a False value, so we don't need to hit the database again for this check.
 
         :param model_cls: The model class of the profile to be checked.
-        :return: The profile instance belonging to the user or False
+        :return: The profile instance belonging to the user or None
         """
         profile_instance = self.roles.get(model_cls)  # None | False | instance
         if profile_instance is None:
             profile_instance = self._set_role(model_cls)
-        return profile_instance
+        return profile_instance if profile_instance else None
 
     def load_roles(self):
         """

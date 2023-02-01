@@ -1,4 +1,9 @@
-from typing import Callable, Any
+"""
+This module contains an abstract model `UserProfileModel` to be used as a mixin for any profile model class
+"""
+
+from typing import Callable, Any, Optional
+from warnings import warn
 
 from building_blocks.models import Archivable, UnnamedKaosModel
 from django.conf import settings
@@ -17,6 +22,8 @@ class UserProfileModel(
     Abstract model for profile models to inherit from. Provides a one-to-one user field that points to the owner of a
     profile.
     Override the user field, if you'd like to set its `related_name` or set it to optional (e.g. for bot profiles)
+
+    :param user: The user this profile belongs to
     """
 
     class Meta:
@@ -34,10 +41,23 @@ class UserProfileModel(
         """
         Return a function that first, checks if a user has the role denoted by this profile class, and then runs
         `check_func` on the user's profile for this role to determine extra permissions.
+
         :param check_func: Function that receives a profile instance and checks if it passes a condition or not.
         :return: Function that accepts a user instance as an argument, and checks if they have the role and some extra
             conditions.
+
+        Example:
+            >>> # models.py
+            >>> @register_role
+            >>> class AuthorProfile(UserProfileModel):
+            >>>     is_super_author = models.BooleanField(default=False)
+            >>>
+            >>>     @staticmethod
+            >>>     def check_super_author(user):
+            >>>         return AuthorProfile.check_user(lambda p: p.is_super_author)(user)
         """
+
+        warn('This method is deprecated.', DeprecationWarning)
 
         def check_user_func(user) -> bool:
             profile = user.get_or_set_role(cls)
@@ -46,6 +66,16 @@ class UserProfileModel(
             return check_func(profile)
 
         return check_user_func
+
+    @classmethod
+    def get_for_user(cls, user) -> Optional['UserProfileModel']:
+        """
+        Check if a user has a profile denoted by this class.
+
+        :param user: the user to check
+        :return: The profile instance belonging to the user or None
+        """
+        return user.get_or_set_role(cls)
 
 
 __all__ = [

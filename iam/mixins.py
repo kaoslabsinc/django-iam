@@ -57,7 +57,7 @@ class IAMUserMixin:
 
     def _set_role(self, model_cls) -> Any | bool:
         """
-        Check if this user has a particular profile denoted by `model_cls`. If they do cache the profile instance. If
+        Check if this user has a particular profile denoted by `model_cls`. If they do, cache the profile instance. If
         not cache a False value, so we don't need to hit the database again for this check.
 
         :param model_cls: The model class of the profile to be checked.
@@ -72,9 +72,11 @@ class IAMUserMixin:
 
     def get_or_set_role(self, model_cls):
         """
-        Check if this user has a particular profile denoted by `model_cls`. First hit the cache. If there is no value
-        in the cache, hit the database. If the user has the profile cache the profile instance. If
-        not cache a False value, so we don't need to hit the database again for this check.
+        Check if this user has a particular profile denoted by `model_cls`.
+
+        First hit the cache. If there is no value
+        in the cache, hit the database. If the user has the profile, cache the profile instance. If
+        not, cache a False value, so we don't need to hit the database again for this check.
 
         :param model_cls: The model class of the profile to be checked.
         :return: The profile instance belonging to the user or False
